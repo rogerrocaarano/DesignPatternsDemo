@@ -1,0 +1,33 @@
+@startuml
+
+participant SearchOrCreateCustomerHandler
+participant CreateSaleHandler
+participant IProductsRepository
+participant Sale
+participant SaleContext
+
+SearchOrCreateCustomerHandler -> CreateSaleHandler : HandleAsync(context)
+activate CreateSaleHandler
+
+CreateSaleHandler -> Sale ** : new Sale(CustomerEntity)
+
+loop por cada SaleItemRequest en context.SaleRequest.Items
+    CreateSaleHandler -> IProductsRepository : SearchProductByIdAsync(item.ProductId)
+    activate IProductsRepository
+    IProductsRepository --> CreateSaleHandler : product?
+    deactivate IProductsRepository
+
+    alt producto no encontrado
+        CreateSaleHandler -> CreateSaleHandler : throw ProductNotFoundException
+    else producto encontrado
+        CreateSaleHandler -> Sale : AddProduct(product, item.Quantity)
+    end
+end
+
+CreateSaleHandler -> SaleContext : SaleEntity = sale
+
+CreateSaleHandler -> CreateSaleHandler : base.HandleAsync(context)
+note right : delega al siguiente handler
+deactivate CreateSaleHandler
+
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+
+participant SalePipeline
+participant SearchOrCreateCustomerHandler
+participant ICustomersRepository
+participant SaleContext
+
+SalePipeline -> SearchOrCreateCustomerHandler : HandleAsync(context)
+activate SearchOrCreateCustomerHandler
+
+SearchOrCreateCustomerHandler -> ICustomersRepository : SearchCustomerByNitAsync(CustomerNit)
+activate ICustomersRepository
+ICustomersRepository --> SearchOrCreateCustomerHandler : customer?
+deactivate ICustomersRepository
+
+alt customer encontrado
+    SearchOrCreateCustomerHandler -> SaleContext : IsNewCustomer = false
+    SearchOrCreateCustomerHandler -> SaleContext : CustomerEntity = existingCustomer
+else cliente nuevo
+    SearchOrCreateCustomerHandler -> SaleContext : IsNewCustomer = true
+    SearchOrCreateCustomerHandler -> SaleContext : CustomerEntity = new Customer(nit, fullName)
+end
+
+SearchOrCreateCustomerHandler -> SearchOrCreateCustomerHandler : base.HandleAsync(context)
+note right : delega al siguiente handler
+deactivate SearchOrCreateCustomerHandler
+
+@enduml

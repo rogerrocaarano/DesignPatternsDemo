@@ -1,0 +1,46 @@
+@startuml
+
+actor FrontEnd
+participant SalesEndpoints
+participant SalePipeline
+participant SaleContext
+participant SearchOrCreateCustomerHandler
+participant CreateSaleHandler
+participant ApplyDiscountHandler
+participant PersistSaleHandler
+
+FrontEnd -> SalesEndpoints : POST /sales\n(SaleRequest)
+activate SalesEndpoints
+
+SalesEndpoints -> SalePipeline : HandleRequest(request)
+activate SalePipeline
+
+SalePipeline -> SaleContext ** : new SaleContext\n{ SaleRequest = request }
+
+SalePipeline -> SearchOrCreateCustomerHandler : HandleAsync(context)
+activate SearchOrCreateCustomerHandler
+SearchOrCreateCustomerHandler --> SaleContext : CustomerEntity, IsNewCustomer
+SearchOrCreateCustomerHandler -> CreateSaleHandler : HandleAsync(context)
+deactivate SearchOrCreateCustomerHandler
+
+activate CreateSaleHandler
+CreateSaleHandler --> SaleContext : SaleEntity
+CreateSaleHandler -> ApplyDiscountHandler : HandleAsync(context)
+deactivate CreateSaleHandler
+
+activate ApplyDiscountHandler
+ApplyDiscountHandler --> SaleContext : SaleDiscount
+ApplyDiscountHandler -> PersistSaleHandler : HandleAsync(context)
+deactivate ApplyDiscountHandler
+
+activate PersistSaleHandler
+PersistSaleHandler --> SaleContext : (persiste)
+deactivate PersistSaleHandler
+
+SalePipeline --> SalesEndpoints : context
+deactivate SalePipeline
+
+SalesEndpoints --> FrontEnd : 201 Created\n(SaleResultDto)
+deactivate SalesEndpoints
+
+@enduml
