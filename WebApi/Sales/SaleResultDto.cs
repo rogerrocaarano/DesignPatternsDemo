@@ -2,15 +2,6 @@ using WebApi.Sales.Pipelines;
 
 namespace WebApi.Sales;
 
-public record SaleResultItemDto(
-    Guid ProductId,
-    string ProductName,
-    decimal UnitCost,
-    int Quantity,
-    decimal Subtotal);
-
-public record DiscountDto(string Message, decimal Amount);
-
 public record SaleResultDto(
     Guid? SaleId,
     string CustomerNit,

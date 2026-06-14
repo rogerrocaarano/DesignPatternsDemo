@@ -3,12 +3,20 @@ using WebApi.Sales.Pipelines;
 
 namespace WebApi.Sales.Handlers;
 
-public class SearchOrCreateCustomerHandler(ICustomersRepository repository) : SaleBaseHandler
+public class SearchOrCreateCustomerHandler : SaleBaseHandler
 {
+    private readonly ICustomersRepository _customersRepository;
+
+    public SearchOrCreateCustomerHandler(ICustomersRepository customersRepository)
+    {
+        _customersRepository = customersRepository;
+    }
+
+
     public override async Task HandleAsync(SaleContext context)
     {
         var request = context.SaleRequest;
-        var existingCustomer = await repository.SearchCustomerByNitAsync(request.CustomerNit);
+        var existingCustomer = await _customersRepository.SearchCustomerByNitAsync(request.CustomerNit);
 
         context.IsNewCustomer = existingCustomer is null;
         context.CustomerEntity = existingCustomer ??

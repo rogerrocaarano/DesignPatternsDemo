@@ -3,8 +3,15 @@ using WebApi.Sales.Pipelines;
 
 namespace WebApi.Sales.Handlers;
 
-public class CreateSaleHandler(IProductsRepository productsRepository) : SaleBaseHandler
+public class CreateSaleHandler : SaleBaseHandler
 {
+    private readonly IProductsRepository _productsRepository;
+
+    public CreateSaleHandler(IProductsRepository productsRepository)
+    {
+        _productsRepository = productsRepository;
+    }
+
     public override async Task HandleAsync(SaleContext context)
     {
         var customer = context.CustomerEntity!;
@@ -12,7 +19,7 @@ public class CreateSaleHandler(IProductsRepository productsRepository) : SaleBas
 
         foreach (var item in context.SaleRequest.Items)
         {
-            var product = await productsRepository.SearchProductByIdAsync(item.ProductId)
+            var product = await _productsRepository.SearchProductByIdAsync(item.ProductId)
                           ?? throw new ProductNotFoundException(item.ProductId);
 
             sale.AddProduct(product, item.Quantity);

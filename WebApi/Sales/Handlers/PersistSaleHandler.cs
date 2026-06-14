@@ -3,9 +3,18 @@ using WebApi.Sales.Pipelines;
 
 namespace WebApi.Sales.Handlers;
 
-public class PersistSaleHandler(ISalesRepository salesRepository, ICustomersRepository customersRepository)
+public class PersistSaleHandler
     : SaleBaseHandler
 {
+    private readonly ICustomersRepository _customersRepository;
+    private readonly ISalesRepository _salesRepository;
+
+    public PersistSaleHandler(ISalesRepository salesRepository, ICustomersRepository customersesRepository)
+    {
+        _salesRepository = salesRepository;
+        _customersRepository = customersesRepository;
+    }
+    
     public override async Task HandleAsync(SaleContext context)
     {
         var sale = context.SaleEntity!;
@@ -16,8 +25,8 @@ public class PersistSaleHandler(ISalesRepository salesRepository, ICustomersRepo
         if (discount != null) saleAmount -= discount.Amount;
 
         customer.IncreaseTotalSales(saleAmount);
-        await customersRepository.UpsertCustomerAsync(customer);
-        await salesRepository.SaveSale(sale);
+        await _customersRepository.UpsertCustomerAsync(customer);
+        await _salesRepository.SaveSale(sale);
 
         await base.HandleAsync(context);
     }
