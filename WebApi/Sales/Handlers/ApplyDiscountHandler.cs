@@ -1,10 +1,11 @@
 using WebApi.Discounts;
+using WebApi.Sales.Pipelines;
 
-namespace WebApi.Sales.RegisterSale.Handlers;
+namespace WebApi.Sales.Handlers;
 
 public class ApplyDiscountHandler(DiscountService discountService) : RegisterSaleBaseHandler
 {
-    public override async Task HandleAsync(RegisterSaleContext context)
+    public override async Task HandleAsync(SaleContext context)
     {
         var sale = context.SaleEntity!;
 

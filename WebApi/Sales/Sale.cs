@@ -7,10 +7,6 @@ public class Sale
 {
     private readonly List<SaleItem> _items = [];
 
-    public Guid Id { get; private set; }
-    public Customer Customer { get; private set; } = null!;
-    public IEnumerable<SaleItem> Items => _items;
-
     private Sale()
     {
         // For ORM
@@ -23,6 +19,10 @@ public class Sale
         _items = [];
     }
 
+    public Guid Id { get; private set; }
+    public Customer Customer { get; private set; } = null!;
+    public IEnumerable<SaleItem> Items => _items;
+
     public decimal CalculateTotal()
     {
         return _items.Sum(item => item.CalculateSubtotal());
@@ -31,9 +31,7 @@ public class Sale
     public void AddProduct(Product product, int quantity)
     {
         if (quantity <= 0)
-        {
             throw new ArgumentOutOfRangeException(nameof(quantity), "Quantity must be greater than zero.");
-        }
 
         _items.Add(new SaleItem { Item = product, Quantity = quantity });
     }

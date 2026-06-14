@@ -4,8 +4,8 @@ using WebApi.Discounts;
 using WebApi.Discounts.Strategies;
 using WebApi.Products;
 using WebApi.Sales;
-using WebApi.Sales.RegisterSale;
-using WebApi.Sales.RegisterSale.Handlers;
+using WebApi.Sales.Handlers;
+using WebApi.Sales.Pipelines;
 
 namespace WebApi.Infrastructure;
 
@@ -43,6 +43,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ApplyDiscountHandler>();
         services.AddScoped<PersistSaleHandler>();
         services.AddScoped<RegisterSalePipeline>();
+        services.AddScoped<SimulateSalePipeline>();
 
         return services;
     }

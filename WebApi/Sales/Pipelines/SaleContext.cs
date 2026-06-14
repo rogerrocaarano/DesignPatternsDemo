@@ -1,11 +1,11 @@
 using WebApi.Customers;
 using WebApi.Discounts;
 
-namespace WebApi.Sales.RegisterSale;
+namespace WebApi.Sales.Pipelines;
 
-public class RegisterSaleContext
+public class SaleContext
 {
-    public required RegisterSaleRequest RegisterSaleRequest { get; set; }
+    public required SaleRequest SaleRequest { get; set; }
     public Customer? CustomerEntity { get; set; }
     public bool IsNewCustomer { get; set; }
     public Sale? SaleEntity { get; set; }

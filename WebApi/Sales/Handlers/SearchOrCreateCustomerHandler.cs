@@ -1,12 +1,13 @@
 using WebApi.Customers;
+using WebApi.Sales.Pipelines;
 
-namespace WebApi.Sales.RegisterSale.Handlers;
+namespace WebApi.Sales.Handlers;
 
 public class SearchOrCreateCustomerHandler(ICustomersRepository repository) : RegisterSaleBaseHandler
 {
-    public override async Task HandleAsync(RegisterSaleContext context)
+    public override async Task HandleAsync(SaleContext context)
     {
-        var request = context.RegisterSaleRequest;
+        var request = context.SaleRequest;
         var existingCustomer = await repository.SearchCustomerByNitAsync(request.CustomerNit);
 
         context.IsNewCustomer = existingCustomer is null;

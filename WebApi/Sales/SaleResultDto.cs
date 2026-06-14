@@ -1,4 +1,6 @@
-namespace WebApi.Sales.RegisterSale;
+using WebApi.Sales.Pipelines;
+
+namespace WebApi.Sales;
 
 public record SaleResultItemDto(
     Guid ProductId,
@@ -19,7 +21,7 @@ public record SaleResultDto(
     DiscountDto? Discount,
     decimal Total)
 {
-    public static SaleResultDto FromContext(RegisterSaleContext context, bool persisted)
+    public static SaleResultDto FromContext(SaleContext context, bool persisted)
     {
         var sale = context.SaleEntity!;
         var customer = context.CustomerEntity!;

@@ -38,13 +38,9 @@ public class CustomersRepository(AppDbContext dbContext) : ICustomersRepository
             .AnyAsync(existing => existing.Id == customer.Id);
 
         if (exists)
-        {
             dbContext.Customers.Update(customer);
-        }
         else
-        {
             await dbContext.Customers.AddAsync(customer);
-        }
 
         await dbContext.SaveChangesAsync();
         return customer;

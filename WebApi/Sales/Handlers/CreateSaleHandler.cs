@@ -1,15 +1,16 @@
 using WebApi.Products;
+using WebApi.Sales.Pipelines;
 
-namespace WebApi.Sales.RegisterSale.Handlers;
+namespace WebApi.Sales.Handlers;
 
 public class CreateSaleHandler(IProductsRepository productsRepository) : RegisterSaleBaseHandler
 {
-    public override async Task HandleAsync(RegisterSaleContext context)
+    public override async Task HandleAsync(SaleContext context)
     {
         var customer = context.CustomerEntity!;
         var sale = new Sale(customer);
 
-        foreach (var item in context.RegisterSaleRequest.Items)
+        foreach (var item in context.SaleRequest.Items)
         {
             var product = await productsRepository.SearchProductByIdAsync(item.ProductId)
                           ?? throw new ProductNotFoundException(item.ProductId);

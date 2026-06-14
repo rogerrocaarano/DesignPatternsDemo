@@ -1,4 +1,4 @@
-namespace WebApi.Sales.RegisterSale;
+namespace WebApi.Sales;
 
 public class ProductNotFoundException(Guid productId)
     : Exception($"Product with id '{productId}' was not found.")

@@ -1,0 +1,306 @@
+@startuml
+!theme plain
+title DesignPatternsDemo - Backend Class Diagram
+
+' ─────────────────────────────────────────────
+' CUSTOMERS
+' ─────────────────────────────────────────────
+package "WebApi.Customers" #EAF4FB {
+
+  class Customer {
+    +Guid Id
+    +string Nit
+    +string FullName
+    +decimal TotalSales
+    +Customer(nit: string, fullName: string)
+    +IncreaseTotalSales(amount: decimal) : void
+  }
+
+  class CustomerDto <<record>> {
+    +Guid Id
+    +string Nit
+    +string FullName
+    +decimal TotalSales
+    +{static} FromEntity(customer: Customer) : CustomerDto
+  }
+
+  interface ICustomersRepository {
+    +ListAllCustomersAsync() : Task<IReadOnlyList<Customer>>
+    +ListAllCustomerIdsAsync() : Task<IReadOnlyList<Guid>>
+    +SearchCustomerByNitAsync(nit: string) : Task<Customer?>
+    +SearchCustomerByIdAsync(id: Guid) : Task<Customer?>
+    +UpsertCustomerAsync(customer: Customer) : Task<Customer>
+  }
+
+  class CustomersRepository {
+    +ListAllCustomersAsync() : Task<IReadOnlyList<Customer>>
+    +ListAllCustomerIdsAsync() : Task<IReadOnlyList<Guid>>
+    +SearchCustomerByNitAsync(nit: string) : Task<Customer?>
+    +SearchCustomerByIdAsync(id: Guid) : Task<Customer?>
+    +UpsertCustomerAsync(customer: Customer) : Task<Customer>
+  }
+
+  CustomersRepository ..|> ICustomersRepository
+  CustomerDto ..> Customer : uses
+}
+
+' ─────────────────────────────────────────────
+' PRODUCTS
+' ─────────────────────────────────────────────
+package "WebApi.Products" #EAF7F0 {
+
+  class Product {
+    +Guid Id
+    +string Name
+    +decimal UnitCost
+  }
+
+  class ProductDto <<record>> {
+    +Guid Id
+    +string Name
+    +decimal UnitCost
+    +{static} FromEntity(product: Product) : ProductDto
+  }
+
+  interface IProductsRepository {
+    +ListAllProductsAsync() : Task<IReadOnlyList<Product>>
+    +ListAllProductIdsAsync() : Task<IReadOnlyList<Guid>>
+    +SearchProductByIdAsync(id: Guid) : Task<Product?>
+  }
+
+  class ProductsRepository {
+    +ListAllProductsAsync() : Task<IReadOnlyList<Product>>
+    +ListAllProductIdsAsync() : Task<IReadOnlyList<Guid>>
+    +SearchProductByIdAsync(id: Guid) : Task<Product?>
+  }
+
+  ProductsRepository ..|> IProductsRepository
+  ProductDto ..> Product : uses
+}
+
+' ─────────────────────────────────────────────
+' DISCOUNTS
+' ─────────────────────────────────────────────
+package "WebApi.Discounts" #FEF9E7 {
+
+  class Discount <<record>> {
+    +string Message
+    +decimal Amount
+  }
+
+  class DiscountService {
+    +GetDiscount(customer: Customer?, saleAmount: decimal) : Discount?
+  }
+
+  package "Strategies" #FDF2D0 {
+
+    interface IDiscountStrategy {
+      +CalculateDiscount(customer: Customer?, saleAmount: decimal) : Discount?
+    }
+
+    class NewCustomerDiscount {
+      +CalculateDiscount(customer: Customer?, saleAmount: decimal) : Discount?
+    }
+
+    class SaleAmountDiscount {
+      +CalculateDiscount(customer: Customer?, saleAmount: decimal) : Discount?
+    }
+
+    class VipClientDiscount {
+      +CalculateDiscount(customer: Customer?, saleAmount: decimal) : Discount?
+    }
+
+    NewCustomerDiscount ..|> IDiscountStrategy
+    SaleAmountDiscount ..|> IDiscountStrategy
+    VipClientDiscount ..|> IDiscountStrategy
+  }
+
+  DiscountService o-- IDiscountStrategy : uses *
+}
+
+' ─────────────────────────────────────────────
+' SALES
+' ─────────────────────────────────────────────
+package "WebApi.Sales" #F9EBEA {
+
+  class Sale {
+    +Guid Id
+    +Customer Customer
+    +IEnumerable<SaleItem> Items
+    +Sale(customer: Customer)
+    +AddProduct(product: Product, quantity: int) : void
+    +CalculateTotal() : decimal
+  }
+
+  class SaleItem {
+    +Product Item
+    +int Quantity
+    +CalculateSubtotal() : decimal
+  }
+
+  interface ISalesRepository {
+    +SaveSale(newSale: Sale) : Task<Sale>
+  }
+
+  class SalesRepository {
+    +SaveSale(newSale: Sale) : Task<Sale>
+  }
+
+  SalesRepository ..|> ISalesRepository
+  Sale *-- SaleItem : contains >
+  Sale --> "WebApi.Customers.Customer" : references
+  SaleItem --> "WebApi.Products.Product" : references
+
+  ' ─── RegisterSale sub-package ───
+  package "RegisterSale" #F5CBA7 {
+
+    class RegisterSaleRequest <<record>> {
+      +string CustomerFullName
+      +string CustomerNit
+      +List<SaleItemRequest> Items
+    }
+
+    class SaleItemRequest <<record>> {
+      +Guid ProductId
+      +int Quantity
+    }
+
+    class RegisterSaleContext {
+      +RegisterSaleRequest RegisterSaleRequest
+      +Customer? CustomerEntity
+      +bool IsNewCustomer
+      +Sale? SaleEntity
+      +Discount? SaleDiscount
+    }
+
+    class SaleResultDto <<record>> {
+      +Guid? SaleId
+      +string CustomerNit
+      +string CustomerFullName
+      +bool IsNewCustomer
+      +IReadOnlyList<SaleResultItemDto> Items
+      +decimal Subtotal
+      +DiscountDto? Discount
+      +decimal Total
+      +{static} FromContext(context: RegisterSaleContext, persisted: bool) : SaleResultDto
+    }
+
+    class SaleResultItemDto <<record>> {
+      +Guid ProductId
+      +string ProductName
+      +decimal UnitCost
+      +int Quantity
+      +decimal Subtotal
+    }
+
+    class DiscountDto <<record>> {
+      +string Message
+      +decimal Amount
+    }
+
+    class ProductNotFoundException {
+      +Guid ProductId
+      +ProductNotFoundException(productId: Guid)
+    }
+
+    class RegisterSalePipeline {
+      +SimulateAsync(request: RegisterSaleRequest) : Task<RegisterSaleContext>
+      +RegisterAsync(request: RegisterSaleRequest) : Task<RegisterSaleContext>
+      -RunAsync(request: RegisterSaleRequest) : Task<RegisterSaleContext>
+    }
+
+    ProductNotFoundException --|> Exception
+
+    RegisterSaleRequest *-- SaleItemRequest : contains >
+    RegisterSaleContext o-- RegisterSaleRequest
+    RegisterSaleContext o-- Sale
+    SaleResultDto *-- SaleResultItemDto : contains >
+    SaleResultDto o-- DiscountDto
+
+    ' ─── Handlers sub-package ───
+    package "Handlers" #FDEBD0 {
+
+      abstract class RegisterSaleBaseHandler {
+        -RegisterSaleBaseHandler? Next
+        +HandleAsync(context: RegisterSaleContext) : Task
+        +HandleNext(next: RegisterSaleBaseHandler) : RegisterSaleBaseHandler
+      }
+
+      class SearchOrCreateCustomerHandler {
+        +HandleAsync(context: RegisterSaleContext) : Task
+      }
+
+      class CreateSaleHandler {
+        +HandleAsync(context: RegisterSaleContext) : Task
+      }
+
+      class ApplyDiscountHandler {
+        +HandleAsync(context: RegisterSaleContext) : Task
+      }
+
+      class PersistSaleHandler {
+        +HandleAsync(context: RegisterSaleContext) : Task
+      }
+
+      SearchOrCreateCustomerHandler --|> RegisterSaleBaseHandler
+      CreateSaleHandler --|> RegisterSaleBaseHandler
+      ApplyDiscountHandler --|> RegisterSaleBaseHandler
+      PersistSaleHandler --|> RegisterSaleBaseHandler
+    }
+
+    RegisterSalePipeline o-- SearchOrCreateCustomerHandler
+    RegisterSalePipeline o-- CreateSaleHandler
+    RegisterSalePipeline o-- ApplyDiscountHandler
+    RegisterSalePipeline o-- PersistSaleHandler
+  }
+}
+
+' ─────────────────────────────────────────────
+' INFRASTRUCTURE
+' ─────────────────────────────────────────────
+package "WebApi.Infrastructure" #E8DAEF {
+
+  class AppDbContext {
+    +DbSet<Customer> Customers
+    +DbSet<Product> Products
+    +DbSet<Sale> Sales
+    #OnModelCreating(modelBuilder: ModelBuilder) : void
+  }
+
+  class CustomerConfiguration {
+    +Configure(builder: EntityTypeBuilder<Customer>) : void
+  }
+
+  class ProductConfiguration {
+    +Configure(builder: EntityTypeBuilder<Product>) : void
+  }
+
+  class SaleConfiguration {
+    +Configure(builder: EntityTypeBuilder<Sale>) : void
+  }
+
+  class SaleItemConfiguration {
+    +Configure(builder: EntityTypeBuilder<SaleItem>) : void
+  }
+
+  AppDbContext --|> DbContext
+  CustomerConfiguration ..|> "IEntityTypeConfiguration<Customer>"
+  ProductConfiguration ..|> "IEntityTypeConfiguration<Product>"
+  SaleConfiguration ..|> "IEntityTypeConfiguration<Sale>"
+  SaleItemConfiguration ..|> "IEntityTypeConfiguration<SaleItem>"
+}
+
+' ─────────────────────────────────────────────
+' CROSS-PACKAGE DEPENDENCIES
+' ─────────────────────────────────────────────
+CustomersRepository --> AppDbContext
+ProductsRepository --> AppDbContext
+SalesRepository --> AppDbContext
+
+SearchOrCreateCustomerHandler --> ICustomersRepository
+CreateSaleHandler --> IProductsRepository
+ApplyDiscountHandler --> DiscountService
+PersistSaleHandler --> ISalesRepository
+PersistSaleHandler --> ICustomersRepository
+
+@enduml

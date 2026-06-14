@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using WebApi.Customers;
 using WebApi.Infrastructure;
-using static WebApi.Infrastructure.ServiceCollectionExtensions;
 using WebApi.Products;
-using WebApi.Sales.RegisterSale;
+using WebApi.Sales;
+using static WebApi.Infrastructure.ServiceCollectionExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
