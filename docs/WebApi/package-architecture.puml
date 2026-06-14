@@ -1,5 +1,7 @@
 @startuml
 
+title Diagrama de Paquetes - Arquitectura
+
 package Domain {
     note as nDomain
         **Capa de Dominio**

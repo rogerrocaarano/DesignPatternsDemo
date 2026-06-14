@@ -1,5 +1,7 @@
 @startuml
 
+title Diagrama de Clases - PersistSaleHandler
+
 !include classes/SaleBaseHandler.puml
 !include classes/PersistSaleHandler.puml
 !include classes/SaleContext.puml

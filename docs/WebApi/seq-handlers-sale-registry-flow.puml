@@ -1,5 +1,10 @@
 @startuml
 
+title Diagrama de Secuencia - Flujo de Registro de Venta
+
+skinparam wrapWidth 250
+skinparam maxMessageSize 100
+
 actor FrontEnd
 participant SalesEndpoints
 participant SalePipeline

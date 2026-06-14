@@ -1,5 +1,9 @@
 @startuml
 
+title Diagrama de Clases
+
+skinparam wrapWidth 250
+skinparam maxMessageSize 150
 !include classes/SalesEndpoints.puml
 !include classes/SaleRequest.puml
 !include classes/SalePipeline.puml

@@ -1,4 +1,7 @@
 @startuml
+skinparam wrapWidth 250
+skinparam maxMessageSize 150
+title Diagrama de Clases - ApplyDiscountHandler
 
 !include classes/SaleBaseHandler.puml
 !include classes/ApplyDiscountHandler.puml

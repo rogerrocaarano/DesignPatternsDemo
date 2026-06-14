@@ -1,5 +1,10 @@
 @startuml
 
+title Diagrama de Clases - Handlers
+' Limita el ancho de los bloques envolviendo el texto largo automáticamente
+skinparam wrapWidth 250
+skinparam maxMessageSize 150
+
 !include classes/SalesEndpoints.puml
 !include classes/SaleRequest.puml
 !include classes/SalePipeline.puml
@@ -14,10 +19,18 @@ SalesEndpoints .up.> SaleRequest
 SalesEndpoints ..> SalePipeline
 SalePipeline o-- SaleBaseHandler
 SaleBaseHandler <.. SaleBaseHandler : Handler siguiente
+
+' Herencia tradicional (se mantiene vertical con --)
 SaleBaseHandler <|-- SearchOrCreateCustomerHandler
 SaleBaseHandler <|-- CreateSaleHandler
 SaleBaseHandler <|-- ApplyDiscountHandler
 SaleBaseHandler <|-- PersistSaleHandler
+
 SaleBaseHandler .left.> SaleContext : Modifica
+
+' --- TRUCO DE DISEÑO: Forzar cuadrícula 2x2 ---
+' Empujamos el 3er y 4to handler exactamente debajo del 1er y 2do handler
+SearchOrCreateCustomerHandler -down[hidden]-> ApplyDiscountHandler
+CreateSaleHandler -down[hidden]-> PersistSaleHandler
 
 @enduml

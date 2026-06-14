@@ -1,5 +1,7 @@
 @startuml
 
+title Diagrama de Clases - CreateSaleHandler
+
 !include classes/SaleBaseHandler.puml
 !include classes/CreateSaleHandler.puml
 !include classes/SaleContext.puml

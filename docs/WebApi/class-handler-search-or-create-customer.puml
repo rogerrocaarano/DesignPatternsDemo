@@ -1,5 +1,7 @@
 @startuml
 
+title Diagrama de Clases - SearchOrCreateCustomerHandler
+
 !include classes/SaleBaseHandler.puml
 !include classes/SearchOrCreateCustomerHandler.puml
 !include classes/SaleContext.puml

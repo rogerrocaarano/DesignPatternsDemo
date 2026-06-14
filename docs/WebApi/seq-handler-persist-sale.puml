@@ -1,5 +1,10 @@
 @startuml
 
+title Diagrama de Secuencia - Persistir Venta
+
+skinparam wrapWidth 250
+skinparam maxMessageSize 100
+
 participant ApplyDiscountHandler
 participant PersistSaleHandler
 participant Sale

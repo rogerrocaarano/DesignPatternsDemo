@@ -1,5 +1,11 @@
 @startuml
 
+title Diagrama de Secuencia - Crear Venta
+
+skinparam wrapWidth 250
+skinparam maxMessageSize 100
+
+
 participant SearchOrCreateCustomerHandler
 participant CreateSaleHandler
 participant IProductsRepository
