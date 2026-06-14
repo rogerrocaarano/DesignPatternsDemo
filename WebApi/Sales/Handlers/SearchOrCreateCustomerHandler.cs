@@ -3,7 +3,7 @@ using WebApi.Sales.Pipelines;
 
 namespace WebApi.Sales.Handlers;
 
-public class SearchOrCreateCustomerHandler(ICustomersRepository repository) : RegisterSaleBaseHandler
+public class SearchOrCreateCustomerHandler(ICustomersRepository repository) : SaleBaseHandler
 {
     public override async Task HandleAsync(SaleContext context)
     {

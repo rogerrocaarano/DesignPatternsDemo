@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using WebApi;
 using WebApi.Customers;
-using WebApi.Infrastructure;
+using WebApi.Infrastructure.Data;
 using WebApi.Products;
 using WebApi.Sales;
 using static WebApi.Infrastructure.ServiceCollectionExtensions;

@@ -4,7 +4,7 @@ using WebApi.Sales.Pipelines;
 namespace WebApi.Sales.Handlers;
 
 public class PersistSaleHandler(ISalesRepository salesRepository, ICustomersRepository customersRepository)
-    : RegisterSaleBaseHandler
+    : SaleBaseHandler
 {
     public override async Task HandleAsync(SaleContext context)
     {

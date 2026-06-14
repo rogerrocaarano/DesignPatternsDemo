@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WebApi.Sales;
 
-namespace WebApi.Infrastructure.Configurations;
+namespace WebApi.Infrastructure.Data.Mapping;
 
-public class SaleItemConfiguration : IEntityTypeConfiguration<SaleItem>
+public class EfSaleItemConfiguration : IEntityTypeConfiguration<SaleItem>
 {
     public void Configure(EntityTypeBuilder<SaleItem> builder)
     {

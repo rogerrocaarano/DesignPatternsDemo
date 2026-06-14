@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using WebApi.Infrastructure;
+using WebApi.Infrastructure.Data;
+using WebApi.Products;
 
-namespace WebApi.Products;
+namespace WebApi.Infrastructure.Repositories;
 
-public class ProductsRepository(AppDbContext dbContext) : IProductsRepository
+public class EfProductsRepository(AppDbContext dbContext) : IProductsRepository
 {
     public async Task<IReadOnlyList<Product>> ListAllProductsAsync()
     {

@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WebApi.Customers;
 
-namespace WebApi.Infrastructure.Configurations;
+namespace WebApi.Infrastructure.Data.Mapping;
 
-public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
+public class EfCustomerConfiguration : IEntityTypeConfiguration<Customer>
 {
     public void Configure(EntityTypeBuilder<Customer> builder)
     {

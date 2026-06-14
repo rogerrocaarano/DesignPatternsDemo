@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using WebApi.Infrastructure;
+using WebApi.Customers;
+using WebApi.Infrastructure.Data;
 
-namespace WebApi.Customers;
+namespace WebApi.Infrastructure.Repositories;
 
-public class CustomersRepository(AppDbContext dbContext) : ICustomersRepository
+public class EfCustomersRepository(AppDbContext dbContext) : ICustomersRepository
 {
     public async Task<IReadOnlyList<Customer>> ListAllCustomersAsync()
     {

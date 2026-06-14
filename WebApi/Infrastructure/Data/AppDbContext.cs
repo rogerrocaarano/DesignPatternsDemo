@@ -3,7 +3,7 @@ using WebApi.Customers;
 using WebApi.Products;
 using WebApi.Sales;
 
-namespace WebApi.Infrastructure;
+namespace WebApi.Infrastructure.Data;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {

@@ -1,6 +1,6 @@
 ﻿namespace WebApi.Sales.Pipelines;
 
-public interface IRegisterSalePipeline
+public interface ISalePipeline
 {
     Task<SaleContext> HandleRequest(SaleRequest request);
 }

@@ -1,8 +1,9 @@
-using WebApi.Infrastructure;
+using WebApi.Infrastructure.Data;
+using WebApi.Sales;
 
-namespace WebApi.Sales;
+namespace WebApi.Infrastructure.Repositories;
 
-public class SalesRepository(AppDbContext dbContext) : ISalesRepository
+public class EfSalesRepository(AppDbContext dbContext) : ISalesRepository
 {
     public async Task<Sale> SaveSale(Sale newSale)
     {

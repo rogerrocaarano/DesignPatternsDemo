@@ -3,7 +3,7 @@ using WebApi.Sales.Pipelines;
 
 namespace WebApi.Sales.Handlers;
 
-public class ApplyDiscountHandler(DiscountService discountService) : RegisterSaleBaseHandler
+public class ApplyDiscountHandler(DiscountService discountService) : SaleBaseHandler
 {
     public override async Task HandleAsync(SaleContext context)
     {

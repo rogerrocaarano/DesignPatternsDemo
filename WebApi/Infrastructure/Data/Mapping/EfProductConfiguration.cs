@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WebApi.Products;
 
-namespace WebApi.Infrastructure.Configurations;
+namespace WebApi.Infrastructure.Data.Mapping;
 
-public class ProductConfiguration : IEntityTypeConfiguration<Product>
+public class EfProductConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
