@@ -19,6 +19,16 @@ public static class CustomerEndpoints
             .WithName("ListCustomerIds")
             .WithSummary("Lista los IDs de los clientes.");
 
+        group.MapGet("/by-nit/{nit}", async (string nit, ICustomersRepository repository) =>
+            {
+                var customer = await repository.SearchCustomerByNitAsync(nit);
+                return customer is null
+                    ? Results.NotFound()
+                    : Results.Ok(CustomerDto.FromEntity(customer));
+            })
+            .WithName("GetCustomerByNit")
+            .WithSummary("Busca un cliente por su NIT (404 si no existe).");
+
         group.MapGet("/{id:guid}", async (Guid id, ICustomersRepository repository) =>
             {
                 var customer = await repository.SearchCustomerByIdAsync(id);

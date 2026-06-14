@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using WebApi.Customers;
 using WebApi.Infrastructure;
+using static WebApi.Infrastructure.ServiceCollectionExtensions;
 using WebApi.Products;
 using WebApi.Sales.RegisterSale;
 
@@ -23,6 +24,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
+    app.UseCors(DevelopmentCorsPolicy);
 }
 
 app.UseHttpsRedirection();

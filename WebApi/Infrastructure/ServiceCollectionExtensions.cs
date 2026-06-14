@@ -11,12 +11,20 @@ namespace WebApi.Infrastructure;
 
 public static class ServiceCollectionExtensions
 {
+    public const string DevelopmentCorsPolicy = "DevelopmentCors";
+
     public static IServiceCollection AddApplicationServices(
         this IServiceCollection services,
         IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("Default") ?? "Data Source=app.db";
         services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
+
+        // CORS for the Angular dev server.
+        services.AddCors(options => options.AddPolicy(DevelopmentCorsPolicy, policy =>
+            policy.WithOrigins("http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod()));
 
         // Repositories
         services.AddScoped<ICustomersRepository, CustomersRepository>();
@@ -25,6 +33,8 @@ public static class ServiceCollectionExtensions
 
         // Discounts (Strategy pattern)
         services.AddScoped<IDiscountStrategy, NewCustomerDiscount>();
+        services.AddScoped<IDiscountStrategy, SaleAmountDiscount>();
+        services.AddScoped<IDiscountStrategy, VipClientDiscount>();
         services.AddScoped<DiscountService>();
 
         // Register-sale pipeline (Chain of Responsibility)
