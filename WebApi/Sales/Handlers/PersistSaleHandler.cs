@@ -9,10 +9,10 @@ public class PersistSaleHandler
     private readonly ICustomersRepository _customersRepository;
     private readonly ISalesRepository _salesRepository;
 
-    public PersistSaleHandler(ISalesRepository salesRepository, ICustomersRepository customersesRepository)
+    public PersistSaleHandler(ISalesRepository salesRepository, ICustomersRepository customersRepository)
     {
         _salesRepository = salesRepository;
-        _customersRepository = customersesRepository;
+        _customersRepository = customersRepository;
     }
 
     public override async Task HandleAsync(SaleContext context)
