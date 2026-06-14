@@ -3,8 +3,8 @@
 public class Customer
 {
     public Guid Id { get; private set; }
-    public string Nit { get; private set; }
-    public string FullName { get; private set; }
+    public string Nit { get; private set; } = null!;
+    public string FullName { get; private set; } = null!;
     public decimal TotalSales { get; private set; }
 
     private Customer()

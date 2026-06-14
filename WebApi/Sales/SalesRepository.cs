@@ -1,11 +1,15 @@
-﻿using WebApi.Customers;
+using WebApi.Infrastructure;
 
 namespace WebApi.Sales;
 
-public class SalesRepository
+public class SalesRepository(AppDbContext dbContext) : ISalesRepository
 {
     public async Task<Sale> SaveSale(Sale newSale)
     {
-        throw new NotImplementedException();
+        // Customer and Products referenced by the sale are already tracked within
+        // the same scoped DbContext, so only the Sale graph is added.
+        await dbContext.Sales.AddAsync(newSale);
+        await dbContext.SaveChangesAsync();
+        return newSale;
     }
 }

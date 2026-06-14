@@ -1,10 +1,10 @@
-﻿using WebApi.Products;
+using WebApi.Products;
 
 namespace WebApi.Sales;
 
 public class SaleItem
 {
-    public Product Item { get; set; }
+    public Product Item { get; set; } = null!;
     public int Quantity { get; set; }
 
     public decimal CalculateSubtotal()

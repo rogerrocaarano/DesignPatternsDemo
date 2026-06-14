@@ -1,3 +1,8 @@
-﻿namespace WebApi.Sales.RegisterSale;
+namespace WebApi.Sales.RegisterSale;
 
-public record RegisterSaleRequest(string CustomerFullName, string CustomerNit, List<SaleItem> SaleItems);
+public record RegisterSaleRequest(
+    string CustomerFullName,
+    string CustomerNit,
+    List<SaleItemRequest> Items);
+
+public record SaleItemRequest(Guid ProductId, int Quantity);

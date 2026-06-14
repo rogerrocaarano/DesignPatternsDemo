@@ -1,19 +1,29 @@
-﻿namespace WebApi.Products;
+using Microsoft.EntityFrameworkCore;
+using WebApi.Infrastructure;
 
-public class ProductsRepository
+namespace WebApi.Products;
+
+public class ProductsRepository(AppDbContext dbContext) : IProductsRepository
 {
-    public Product? SearchProductById(Guid id)
+    public async Task<IReadOnlyList<Product>> ListAllProductsAsync()
     {
-        throw new NotImplementedException();
+        return await dbContext.Products
+            .AsNoTracking()
+            .ToListAsync();
     }
 
-    public ICollection<Guid> ListAllProductIds()
+    public async Task<IReadOnlyList<Guid>> ListAllProductIdsAsync()
     {
-        throw new NotImplementedException();
+        return await dbContext.Products
+            .AsNoTracking()
+            .Select(product => product.Id)
+            .ToListAsync();
     }
 
-    public ICollection<Product> ListAllProducts()
+    public async Task<Product?> SearchProductByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        // Tracked on purpose: when a product is reused while building a sale,
+        // EF must treat it as an existing row instead of inserting a duplicate.
+        return await dbContext.Products.FindAsync(id);
     }
 }

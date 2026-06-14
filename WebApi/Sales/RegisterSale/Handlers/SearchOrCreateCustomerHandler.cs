@@ -1,16 +1,18 @@
-﻿using WebApi.Customers;
+using WebApi.Customers;
 
 namespace WebApi.Sales.RegisterSale.Handlers;
 
-public class SearchOrCreateCustomerHandler(CustomersRepository repository) : RegisterSaleBaseHandler
+public class SearchOrCreateCustomerHandler(ICustomersRepository repository) : RegisterSaleBaseHandler
 {
     public override async Task HandleAsync(RegisterSaleContext context)
     {
-        var sale = context.RegisterSaleRequest;
-        var customer = await repository.SearchCustomerByNitAsync(sale.CustomerNit) ?? 
-                       new Customer(sale.CustomerNit, sale.CustomerFullName);
+        var request = context.RegisterSaleRequest;
+        var existingCustomer = await repository.SearchCustomerByNitAsync(request.CustomerNit);
 
-        context.CustomerEntity = customer;
+        context.IsNewCustomer = existingCustomer is null;
+        context.CustomerEntity = existingCustomer ??
+                                 new Customer(request.CustomerNit, request.CustomerFullName);
+
         await base.HandleAsync(context);
     }
 }

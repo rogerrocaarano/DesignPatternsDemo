@@ -6,7 +6,7 @@ namespace WebApi.Discounts;
 
 public class DiscountService(IEnumerable<IDiscountStrategy> strategies)
 {
-    public Discount? GetDiscount(Customer customer, decimal saleAmount)
+    public Discount? GetDiscount(Customer? customer, decimal saleAmount)
     {
         if (!strategies.Any()) return null;
         

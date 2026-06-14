@@ -1,33 +1,40 @@
-﻿using WebApi.Customers;
+using WebApi.Customers;
 using WebApi.Products;
 
 namespace WebApi.Sales;
 
 public class Sale
 {
-    public Guid Id { get; set; }
-    public Customer Customer { get; set; }
-    public IEnumerable<SaleItem> Items { get; set; } = [];
+    private readonly List<SaleItem> _items = [];
+
+    public Guid Id { get; private set; }
+    public Customer Customer { get; private set; } = null!;
+    public IEnumerable<SaleItem> Items => _items;
 
     private Sale()
     {
         // For ORM
     }
 
-    public Sale(Customer customer, IEnumerable<SaleItem> items)
+    public Sale(Customer customer)
     {
         Id = Guid.NewGuid();
         Customer = customer;
-        Items = items;
+        _items = [];
     }
 
     public decimal CalculateTotal()
     {
-        throw new NotImplementedException();
+        return _items.Sum(item => item.CalculateSubtotal());
     }
 
-    public void AddProduct(Product product,  int quantity)
+    public void AddProduct(Product product, int quantity)
     {
-        throw new NotImplementedException();
+        if (quantity <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(quantity), "Quantity must be greater than zero.");
+        }
+
+        _items.Add(new SaleItem { Item = product, Quantity = quantity });
     }
 }

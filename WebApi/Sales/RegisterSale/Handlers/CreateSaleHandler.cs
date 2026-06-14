@@ -1,11 +1,22 @@
-﻿namespace WebApi.Sales.RegisterSale.Handlers;
+using WebApi.Products;
 
-public class CreateSaleHandler() : RegisterSaleBaseHandler
+namespace WebApi.Sales.RegisterSale.Handlers;
+
+public class CreateSaleHandler(IProductsRepository productsRepository) : RegisterSaleBaseHandler
 {
     public override async Task HandleAsync(RegisterSaleContext context)
     {
-        var sale = new Sale(context.CustomerEntity, context.RegisterSaleRequest.SaleItems);
-        
+        var customer = context.CustomerEntity!;
+        var sale = new Sale(customer);
+
+        foreach (var item in context.RegisterSaleRequest.Items)
+        {
+            var product = await productsRepository.SearchProductByIdAsync(item.ProductId)
+                          ?? throw new ProductNotFoundException(item.ProductId);
+
+            sale.AddProduct(product, item.Quantity);
+        }
+
         context.SaleEntity = sale;
         await base.HandleAsync(context);
     }
