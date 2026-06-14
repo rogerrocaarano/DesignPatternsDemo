@@ -1,0 +1,11 @@
+@startuml SaleContext
+
+class SaleContext {
+    +SaleRequest : SaleRequest
+    +CustomerEntity : Customer?
+    +IsNewCustomer : bool
+    +SaleEntity : Sale?
+    +SaleDiscount : Discount?
+}
+
+@enduml

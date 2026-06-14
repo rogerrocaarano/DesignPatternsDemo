@@ -1,0 +1,19 @@
+@startuml
+
+!include classes/SaleBaseHandler.puml
+!include classes/CreateSaleHandler.puml
+!include classes/SaleContext.puml
+!include classes/IProductsRepository.puml
+!include classes/Product.puml
+!include classes/Sale.puml
+!include classes/SaleItem.puml
+
+SaleBaseHandler <|-- CreateSaleHandler
+SaleBaseHandler .up.> SaleContext : Modifica
+CreateSaleHandler ..> IProductsRepository
+IProductsRepository ..> Product
+Sale o-- SaleItem
+CreateSaleHandler ..> Sale : instancia
+SaleItem ..> Product
+
+@enduml

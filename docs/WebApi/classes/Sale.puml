@@ -1,0 +1,14 @@
+@startuml Sale
+
+class Sale {
+    -_items : List<SaleItem>
+    +Id : Guid
+    +Customer : Customer
+    +Items : IEnumerable<SaleItem>
+    -Sale()
+    +Sale(customer: Customer)
+    +CalculateTotal() : decimal
+    +AddProduct(product: Product, quantity: int) : void
+}
+
+@enduml

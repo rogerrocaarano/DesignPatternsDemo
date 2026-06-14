@@ -1,0 +1,13 @@
+@startuml Customer
+
+class Customer {
+    +Id : Guid
+    +Nit : string
+    +FullName : string
+    +TotalSales : decimal
+    -Customer()
+    +Customer(nit: string, fullName: string)
+    +IncreaseTotalSales(amount: decimal) : void
+}
+
+@enduml

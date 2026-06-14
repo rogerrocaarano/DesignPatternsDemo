@@ -1,0 +1,55 @@
+@startuml
+
+!include classes/SalesEndpoints.puml
+!include classes/SaleRequest.puml
+!include classes/SalePipeline.puml
+!include classes/SaleBaseHandler.puml
+!include classes/SearchOrCreateCustomerHandler.puml
+!include classes/CreateSaleHandler.puml
+!include classes/ApplyDiscountHandler.puml
+!include classes/PersistSaleHandler.puml
+!include classes/SaleContext.puml
+!include classes/ICustomersRepository.puml
+!include classes/IProductsRepository.puml
+!include classes/ISalesRepository.puml
+!include classes/DiscountService.puml
+!include classes/IDiscountStrategy.puml
+!include classes/Discount.puml
+!include classes/Sale.puml
+!include classes/Customer.puml
+!include classes/Product.puml
+!include classes/SaleItem.puml
+!include classes/NewCustomerDiscount.puml
+!include classes/VipClientDiscount.puml
+!include classes/SaleAmountDiscount.puml
+
+SalesEndpoints ..> SalePipeline
+SalePipeline o-- SaleBaseHandler
+SaleBaseHandler <.. SaleBaseHandler : Handler siguiente
+SaleBaseHandler <|-- SearchOrCreateCustomerHandler
+SaleBaseHandler <|-- CreateSaleHandler
+SaleBaseHandler <|-- ApplyDiscountHandler
+SaleBaseHandler <|-- PersistSaleHandler
+SaleBaseHandler .left.> SaleContext : Modifica
+
+SaleRequest <.. SalesEndpoints
+
+SearchOrCreateCustomerHandler ..> ICustomersRepository
+CreateSaleHandler ..> IProductsRepository
+ApplyDiscountHandler ..> DiscountService
+PersistSaleHandler ..> ICustomersRepository
+PersistSaleHandler ..> ISalesRepository
+
+
+DiscountService o-- IDiscountStrategy
+IDiscountStrategy ..> Discount
+IDiscountStrategy <|.. NewCustomerDiscount
+IDiscountStrategy <|.. VipClientDiscount
+IDiscountStrategy <|.. SaleAmountDiscount
+
+ICustomersRepository ..> Customer
+IProductsRepository ..> Product
+ISalesRepository ..> Sale
+Sale o-- SaleItem
+
+@enduml

@@ -1,0 +1,8 @@
+@startuml Discount
+
+class Discount <<record>> {
+    +Message : string
+    +Amount : decimal
+}
+
+@enduml

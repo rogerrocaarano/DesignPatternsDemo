@@ -1,0 +1,20 @@
+@startuml
+
+!include classes/SaleBaseHandler.puml
+!include classes/PersistSaleHandler.puml
+!include classes/SaleContext.puml
+!include classes/ICustomersRepository.puml
+!include classes/ISalesRepository.puml
+!include classes/Customer.puml
+!include classes/Sale.puml
+!include classes/SaleItem.puml
+
+SaleBaseHandler <|-- PersistSaleHandler
+SaleBaseHandler .up.> SaleContext : Modifica
+PersistSaleHandler ..> ICustomersRepository
+PersistSaleHandler ..> ISalesRepository
+ICustomersRepository ..> Customer
+ISalesRepository ..> Sale
+Sale o-- SaleItem
+
+@enduml

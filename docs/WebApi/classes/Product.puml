@@ -1,0 +1,9 @@
+@startuml Product
+
+class Product {
+    +Id : Guid
+    +Name : string
+    +UnitCost : decimal
+}
+
+@enduml

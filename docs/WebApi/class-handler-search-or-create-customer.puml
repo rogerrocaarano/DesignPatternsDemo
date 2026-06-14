@@ -1,0 +1,14 @@
+@startuml
+
+!include classes/SaleBaseHandler.puml
+!include classes/SearchOrCreateCustomerHandler.puml
+!include classes/SaleContext.puml
+!include classes/ICustomersRepository.puml
+!include classes/Customer.puml
+
+SaleBaseHandler <|-- SearchOrCreateCustomerHandler
+SaleBaseHandler .up.> SaleContext : Modifica
+SearchOrCreateCustomerHandler ..> ICustomersRepository
+ICustomersRepository ..> Customer
+
+@enduml

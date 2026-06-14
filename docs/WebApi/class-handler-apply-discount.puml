@@ -1,0 +1,22 @@
+@startuml
+
+!include classes/SaleBaseHandler.puml
+!include classes/ApplyDiscountHandler.puml
+!include classes/SaleContext.puml
+!include classes/DiscountService.puml
+!include classes/IDiscountStrategy.puml
+!include classes/Discount.puml
+!include classes/NewCustomerDiscount.puml
+!include classes/VipClientDiscount.puml
+!include classes/SaleAmountDiscount.puml
+
+SaleBaseHandler <|-- ApplyDiscountHandler
+SaleBaseHandler .up.> SaleContext : Modifica
+ApplyDiscountHandler ..> DiscountService
+DiscountService o-- IDiscountStrategy
+IDiscountStrategy .left.> Discount
+IDiscountStrategy <|.. NewCustomerDiscount
+IDiscountStrategy <|.. VipClientDiscount
+IDiscountStrategy <|.. SaleAmountDiscount
+
+@enduml

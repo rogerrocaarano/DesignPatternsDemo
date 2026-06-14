@@ -1,0 +1,9 @@
+@startuml ApplyDiscountHandler
+
+class ApplyDiscountHandler {
+    -_discountService : DiscountService
+    +ApplyDiscountHandler(discountService: DiscountService)
+    +HandleAsync(context: SaleContext) : Task
+}
+
+@enduml

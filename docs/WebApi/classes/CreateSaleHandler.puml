@@ -1,0 +1,9 @@
+@startuml CreateSaleHandler
+
+class CreateSaleHandler {
+    -_productsRepository : IProductsRepository
+    +CreateSaleHandler(productsRepository: IProductsRepository)
+    +HandleAsync(context: SaleContext) : Task
+}
+
+@enduml

@@ -1,0 +1,9 @@
+@startuml SaleBaseHandler
+
+abstract class SaleBaseHandler {
+    -_next : SaleBaseHandler?
+    +HandleAsync(context: SaleContext) : Task
+    +SetNext(next: SaleBaseHandler) : SaleBaseHandler
+}
+
+@enduml

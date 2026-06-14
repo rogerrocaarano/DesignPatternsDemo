@@ -1,0 +1,9 @@
+@startuml SearchOrCreateCustomerHandler
+
+class SearchOrCreateCustomerHandler {
+    -_customersRepository : ICustomersRepository
+    +SearchOrCreateCustomerHandler(customersRepository: ICustomersRepository)
+    +HandleAsync(context: SaleContext) : Task
+}
+
+@enduml

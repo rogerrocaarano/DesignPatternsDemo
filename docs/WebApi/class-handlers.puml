@@ -1,0 +1,23 @@
+@startuml
+
+!include classes/SalesEndpoints.puml
+!include classes/SaleRequest.puml
+!include classes/SalePipeline.puml
+!include classes/SaleBaseHandler.puml
+!include classes/SearchOrCreateCustomerHandler.puml
+!include classes/CreateSaleHandler.puml
+!include classes/ApplyDiscountHandler.puml
+!include classes/PersistSaleHandler.puml
+!include classes/SaleContext.puml
+
+SalesEndpoints .up.> SaleRequest
+SalesEndpoints ..> SalePipeline
+SalePipeline o-- SaleBaseHandler
+SaleBaseHandler <.. SaleBaseHandler : Handler siguiente
+SaleBaseHandler <|-- SearchOrCreateCustomerHandler
+SaleBaseHandler <|-- CreateSaleHandler
+SaleBaseHandler <|-- ApplyDiscountHandler
+SaleBaseHandler <|-- PersistSaleHandler
+SaleBaseHandler .left.> SaleContext : Modifica
+
+@enduml

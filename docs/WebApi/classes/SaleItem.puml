@@ -1,0 +1,9 @@
+@startuml SaleItem
+
+class SaleItem {
+    +Item : Product
+    +Quantity : int
+    +CalculateSubtotal() : decimal
+}
+
+@enduml
