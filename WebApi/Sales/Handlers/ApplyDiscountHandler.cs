@@ -11,7 +11,7 @@ public class ApplyDiscountHandler : SaleBaseHandler
     {
         _discountService = discountService;
     }
-    
+
     public override async Task HandleAsync(SaleContext context)
     {
         var sale = context.SaleEntity!;

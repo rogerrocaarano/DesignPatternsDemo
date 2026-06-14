@@ -1,4 +1,6 @@
-namespace WebApi.Products;
+using WebApi.Products;
+
+namespace WebApi.Api.DTOs;
 
 public record ProductDto(Guid Id, string Name, decimal UnitCost)
 {

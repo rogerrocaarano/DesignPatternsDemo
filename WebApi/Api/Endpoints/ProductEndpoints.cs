@@ -1,4 +1,7 @@
-namespace WebApi.Products;
+using WebApi.Api.DTOs;
+using WebApi.Products;
+
+namespace WebApi.Api.Endpoints;
 
 public static class ProductEndpoints
 {

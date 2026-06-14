@@ -1,6 +1,6 @@
 using WebApi.Sales.Pipelines;
 
-namespace WebApi.Sales;
+namespace WebApi.Api.DTOs;
 
 public record SaleResultDto(
     Guid? SaleId,

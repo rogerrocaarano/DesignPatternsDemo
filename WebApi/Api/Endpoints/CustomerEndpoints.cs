@@ -1,4 +1,7 @@
-namespace WebApi.Customers;
+using WebApi.Api.DTOs;
+using WebApi.Customers;
+
+namespace WebApi.Api.Endpoints;
 
 public static class CustomerEndpoints
 {

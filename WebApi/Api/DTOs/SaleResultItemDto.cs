@@ -1,4 +1,4 @@
-namespace WebApi.Sales;
+namespace WebApi.Api.DTOs;
 
 public record SaleResultItemDto(
     Guid ProductId,

@@ -14,7 +14,7 @@ public class PersistSaleHandler
         _salesRepository = salesRepository;
         _customersRepository = customersesRepository;
     }
-    
+
     public override async Task HandleAsync(SaleContext context)
     {
         var sale = context.SaleEntity!;

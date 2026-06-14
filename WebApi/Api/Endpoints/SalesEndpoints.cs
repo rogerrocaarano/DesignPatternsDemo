@@ -1,6 +1,7 @@
+using WebApi.Api.DTOs;
 using WebApi.Sales.Pipelines;
 
-namespace WebApi.Sales;
+namespace WebApi.Api.Endpoints;
 
 public static class SalesEndpoints
 {
@@ -12,9 +13,7 @@ public static class SalesEndpoints
             {
                 var request = context.GetArgument<SaleRequest>(0);
                 if (request?.Items is null || request.Items.Count == 0)
-                {
                     return Results.BadRequest("La venta debe incluir al menos un producto.");
-                }
                 return await next(context);
             });
 

@@ -13,10 +13,10 @@ public class CalculateDiscountPipeline : ISalePipeline
         searchOrCreateCustomer
             .SetNext(createSale)
             .SetNext(applyDiscount);
-        
+
         _firstHandler = searchOrCreateCustomer;
     }
-    
+
     public async Task<SaleContext> HandleRequest(SaleRequest request)
     {
         var context = new SaleContext { SaleRequest = request };

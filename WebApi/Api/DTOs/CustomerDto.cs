@@ -1,4 +1,6 @@
-namespace WebApi.Customers;
+using WebApi.Customers;
+
+namespace WebApi.Api.DTOs;
 
 public record CustomerDto(Guid Id, string Nit, string FullName, decimal TotalSales)
 {

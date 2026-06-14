@@ -16,10 +16,10 @@ public class SalePipeline : ISalePipeline
             .SetNext(createSale)
             .SetNext(applyDiscount)
             .SetNext(persistSale);
-        
+
         _firstHandler = searchOrCreateCustomer;
     }
-    
+
     public async Task<SaleContext> HandleRequest(SaleRequest request)
     {
         var context = new SaleContext { SaleRequest = request };
