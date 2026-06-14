@@ -1,0 +1,15 @@
+@startuml EfProductConfiguration
+
+class EfProductConfiguration {
+    +Configure(builder: EntityTypeBuilder<Product>) : void
+}
+
+note bottom of EfProductConfiguration
+    tabla: Products
+    PK: Id
+    Name: required, maxLength(200)
+    UnitCost: decimal(18,2)
+    Seed: 4 productos de ejemplo
+end note
+
+@enduml

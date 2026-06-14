@@ -1,0 +1,11 @@
+@startuml EfProductsRepository
+
+class EfProductsRepository {
+    -dbContext : AppDbContext
+    +EfProductsRepository(dbContext: AppDbContext)
+    +ListAllProductsAsync() : Task<IReadOnlyList<Product>>
+    +ListAllProductIdsAsync() : Task<IReadOnlyList<Guid>>
+    +SearchProductByIdAsync(id: Guid) : Task<Product?>
+}
+
+@enduml

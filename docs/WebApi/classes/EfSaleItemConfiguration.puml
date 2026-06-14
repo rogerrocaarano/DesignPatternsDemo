@@ -1,0 +1,14 @@
+@startuml EfSaleItemConfiguration
+
+class EfSaleItemConfiguration {
+    +Configure(builder: EntityTypeBuilder<SaleItem>) : void
+}
+
+note bottom of EfSaleItemConfiguration
+    tabla: SaleItems
+    PK: Id (shadow property, int)
+    Quantity: required
+    FK: Item → Products (Restrict)
+end note
+
+@enduml

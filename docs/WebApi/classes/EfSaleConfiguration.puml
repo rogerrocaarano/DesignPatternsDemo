@@ -1,0 +1,15 @@
+@startuml EfSaleConfiguration
+
+class EfSaleConfiguration {
+    +Configure(builder: EntityTypeBuilder<Sale>) : void
+}
+
+note bottom of EfSaleConfiguration
+    tabla: Sales
+    PK: Id
+    FK: CustomerId → Customers (Restrict)
+    Items: HasMany → SaleItems (Cascade)
+    Navigation Items: acceso por campo privado _items
+end note
+
+@enduml

@@ -1,0 +1,15 @@
+@startuml EfCustomerConfiguration
+
+class EfCustomerConfiguration {
+    +Configure(builder: EntityTypeBuilder<Customer>) : void
+}
+
+note bottom of EfCustomerConfiguration
+    tabla: Customers
+    PK: Id
+    Nit: required, maxLength(50), unique index
+    FullName: required, maxLength(200)
+    TotalSales: decimal(18,2)
+end note
+
+@enduml

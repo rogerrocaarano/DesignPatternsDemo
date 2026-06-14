@@ -1,0 +1,11 @@
+@startuml AppDbContext
+
+class AppDbContext {
+    +AppDbContext(options: DbContextOptions<AppDbContext>)
+    +Customers : DbSet<Customer>
+    +Products : DbSet<Product>
+    +Sales : DbSet<Sale>
+    #OnModelCreating(modelBuilder: ModelBuilder) : void
+}
+
+@enduml

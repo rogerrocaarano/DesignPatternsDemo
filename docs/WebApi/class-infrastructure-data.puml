@@ -1,0 +1,38 @@
+@startuml
+
+title Diseño de Datos (SQLite)
+
+skinparam wrapWidth 250
+skinparam maxMessageSize 150
+
+' --- Tablas ---
+class Customers {
+    + Id: TEXT <<PK>>
+    + Nit: TEXT
+    + FullName: TEXT
+    + TotalSales: NUMERIC
+}
+
+class Products {
+    + Id: TEXT <<PK>>
+    + Name: TEXT
+    + UnitCost: NUMERIC
+}
+
+class Sales {
+    + Id: TEXT <<PK>>
+    + CustomerId: TEXT <<FK>>
+}
+
+class SaleItems {
+    + Id: INTEGER <<PK>>
+    + ItemId: TEXT <<FK>>
+    + SaleId: TEXT <<FK>>
+    + Quantity: INTEGER
+}
+
+Customers "1" -- "0..*" Sales
+Sales "1" *-- "1..*" SaleItems
+Products "1" -- "0..*" SaleItems
+
+@enduml

@@ -1,0 +1,9 @@
+@startuml EfSalesRepository
+
+class EfSalesRepository {
+    -dbContext : AppDbContext
+    +EfSalesRepository(dbContext: AppDbContext)
+    +SaveSale(newSale: Sale) : Task<Sale>
+}
+
+@enduml
