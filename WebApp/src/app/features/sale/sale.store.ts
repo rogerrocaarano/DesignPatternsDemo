@@ -1,4 +1,5 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, WritableSignal, computed, inject, signal } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { Customer } from '../../core/models/customer.model';
 import { Product } from '../../core/models/product.model';
@@ -28,17 +29,19 @@ export class SaleStore {
   // --- State ---
   readonly nit = signal('');
   readonly customer = signal<Customer | null>(null);
+  readonly customerStatus = signal<Status>('idle');
   readonly newCustomerName = signal('');
-  /** Whether a NIT lookup has been performed for the current NIT. */
   readonly customerSearched = signal(false);
+
   readonly products = signal<Product[]>([]);
   readonly items = signal<SaleLineItem[]>([]);
-  readonly discountResult = signal<SaleResult | null>(null);
-  readonly registeredSale = signal<SaleResult | null>(null);
 
-  readonly customerStatus = signal<Status>('idle');
+  readonly discountResult = signal<SaleResult | null>(null);
   readonly discountStatus = signal<Status>('idle');
+
+  readonly registeredSale = signal<SaleResult | null>(null);
   readonly registerStatus = signal<Status>('idle');
+
   readonly errorMessage = signal<string | null>(null);
 
   // --- Derived state ---
@@ -74,7 +77,6 @@ export class SaleStore {
 
   setNit(nit: string): void {
     this.nit.set(nit);
-    // Any NIT change invalidates the previous lookup and computed totals.
     this.customerSearched.set(false);
     this.customer.set(null);
     this.discountResult.set(null);
@@ -82,23 +84,17 @@ export class SaleStore {
 
   searchCustomer(): void {
     const nit = this.nit().trim();
-    if (nit.length === 0) {
-      return;
-    }
+    if (nit.length === 0) return;
 
-    this.customerStatus.set('loading');
-    this.errorMessage.set(null);
-    this.customersService.getByNit(nit).subscribe({
-      next: (customer) => {
+    this.runRequest(
+      this.customerStatus,
+      this.customersService.getByNit(nit),
+      (customer) => {
         this.customer.set(customer);
         this.customerSearched.set(true);
-        this.customerStatus.set('idle');
       },
-      error: () => {
-        this.customerStatus.set('error');
-        this.errorMessage.set('Error al buscar el cliente.');
-      },
-    });
+      'Error al buscar el cliente.',
+    );
   }
 
   setNewCustomerName(name: string): void {
@@ -106,22 +102,8 @@ export class SaleStore {
   }
 
   addItem(product: Product, quantity: number): void {
-    if (quantity < 1) {
-      return;
-    }
-
-    this.items.update((lines) => {
-      const existing = lines.find((line) => line.product.id === product.id);
-      if (existing) {
-        return lines.map((line) =>
-          line.product.id === product.id
-            ? { ...line, quantity: line.quantity + quantity }
-            : line,
-        );
-      }
-      return [...lines, { product, quantity }];
-    });
-    // New items invalidate a previously calculated discount.
+    if (quantity < 1) return;
+    this.items.update((lines) => this.upsertItem(lines, product, quantity));
     this.discountResult.set(null);
   }
 
@@ -131,42 +113,28 @@ export class SaleStore {
   }
 
   calculateDiscount(): void {
-    if (!this.canCalculate()) {
-      return;
-    }
+    if (!this.canCalculate()) return;
 
-    this.discountStatus.set('loading');
-    this.errorMessage.set(null);
-    this.salesService.calculateDiscount(this.buildRequest()).subscribe({
-      next: (result) => {
-        this.discountResult.set(result);
-        this.discountStatus.set('idle');
-      },
-      error: () => {
-        this.discountStatus.set('error');
-        this.errorMessage.set('No se pudo calcular el descuento.');
-      },
-    });
+    this.runRequest(
+      this.discountStatus,
+      this.salesService.calculateDiscount(this.buildRequest()),
+      (result) => this.discountResult.set(result),
+      'No se pudo calcular el descuento.',
+    );
   }
 
   registerSale(): void {
-    if (!this.canPersist()) {
-      return;
-    }
+    if (!this.canPersist()) return;
 
-    this.registerStatus.set('loading');
-    this.errorMessage.set(null);
-    this.salesService.register(this.buildRequest()).subscribe({
-      next: (result) => {
+    this.runRequest(
+      this.registerStatus,
+      this.salesService.register(this.buildRequest()),
+      (result) => {
         this.registeredSale.set(result);
         this.discountResult.set(result);
-        this.registerStatus.set('idle');
       },
-      error: () => {
-        this.registerStatus.set('error');
-        this.errorMessage.set('No se pudo registrar la venta.');
-      },
-    });
+      'No se pudo registrar la venta.',
+    );
   }
 
   reset(): void {
@@ -192,5 +160,35 @@ export class SaleStore {
         quantity: line.quantity,
       })),
     };
+  }
+
+  private upsertItem(lines: SaleLineItem[], product: Product, quantity: number): SaleLineItem[] {
+    const exists = lines.some((l) => l.product.id === product.id);
+    if (exists) {
+      return lines.map((l) =>
+        l.product.id === product.id ? { ...l, quantity: l.quantity + quantity } : l,
+      );
+    }
+    return [...lines, { product, quantity }];
+  }
+
+  private runRequest<T>(
+    statusSignal: WritableSignal<Status>,
+    request$: Observable<T>,
+    onNext: (result: T) => void,
+    errorMsg: string,
+  ): void {
+    statusSignal.set('loading');
+    this.errorMessage.set(null);
+    request$.subscribe({
+      next: (result) => {
+        onNext(result);
+        statusSignal.set('idle');
+      },
+      error: () => {
+        statusSignal.set('error');
+        this.errorMessage.set(errorMsg);
+      },
+    });
   }
 }

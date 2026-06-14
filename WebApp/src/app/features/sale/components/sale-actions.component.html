@@ -1,0 +1,22 @@
+@if (store.registeredSale(); as sale) {
+  <div class="rounded-lg border border-neutral-900 bg-neutral-900 p-5 text-white" role="status">
+    <p class="text-sm font-semibold">Venta registrada correctamente.</p>
+    <p class="mt-1 text-xs text-neutral-300">ID de venta: {{ sale.saleId }}</p>
+    <button
+      type="button"
+      (click)="store.reset()"
+      class="mt-4 rounded-md bg-white px-4 py-2 text-sm font-medium text-neutral-900 transition hover:bg-neutral-200"
+    >
+      Nueva venta
+    </button>
+  </div>
+} @else {
+  <button
+    type="button"
+    (click)="store.registerSale()"
+    [disabled]="!store.canPersist() || store.registerStatus() === 'loading'"
+    class="w-full rounded-md bg-neutral-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-neutral-700 disabled:cursor-not-allowed disabled:bg-neutral-300"
+  >
+    {{ store.registerStatus() === 'loading' ? 'Registrando…' : 'Registrar venta' }}
+  </button>
+}
