@@ -1,15 +1,11 @@
-﻿using WebApi.Customers;
-
 namespace WebApi.Discounts.Strategies;
 
 public class SaleAmountDiscount : IDiscountStrategy
 {
-    public Discount? CalculateDiscount(Customer? customer, decimal saleAmount)
+    public Discount? CalculateDiscount(decimal saleAmount)
     {
-        if (saleAmount < 1000m) return null;
-
-        const string message = "Se aplica descuento de Bs. 100 por compra mayor a Bs. 1000";
-        const decimal amount = 100m;
+        const string message = "Se aplica descuento del 2% por compra mayor a Bs. 1000";
+        var amount = 0.02m * saleAmount;
         return new Discount(message, amount);
     }
 }

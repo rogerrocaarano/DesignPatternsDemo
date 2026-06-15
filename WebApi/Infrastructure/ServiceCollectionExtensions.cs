@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WebApi.Customers;
 using WebApi.Discounts;
-using WebApi.Discounts.Strategies;
 using WebApi.Infrastructure.Data;
 using WebApi.Infrastructure.Repositories;
 using WebApi.Products;
@@ -51,9 +50,6 @@ public static class ServiceCollectionExtensions
 
     private static void AddDiscounts(this IServiceCollection services)
     {
-        services.AddScoped<IDiscountStrategy, NewCustomerDiscount>();
-        services.AddScoped<IDiscountStrategy, SaleAmountDiscount>();
-        services.AddScoped<IDiscountStrategy, VipClientDiscount>();
         services.AddScoped<DiscountService>();
     }
 
