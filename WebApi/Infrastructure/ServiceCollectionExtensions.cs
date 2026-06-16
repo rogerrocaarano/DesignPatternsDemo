@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using WebApi.Customers.UseCases;
 using WebApi.Domain.Repositories;
 using WebApi.Infrastructure.Data;
 using WebApi.Infrastructure.Repositories;
+using WebApi.Products.UseCases;
 using WebApi.Sales.Handlers;
 using WebApi.Sales.Strategies.Discounts;
 using WebApi.Sales.UseCases;
@@ -21,6 +23,8 @@ public static class ServiceCollectionExtensions
         services.AddRepositories();
         services.AddDiscounts();
         services.AddSalesPipeline();
+        services.AddProductUseCases();
+        services.AddCustomerUseCases();
 
         return services;
     }
@@ -59,5 +63,18 @@ public static class ServiceCollectionExtensions
         services.AddTransient<PersistSaleHandler>();
         services.AddScoped<SaleCreationUseCase>();
         services.AddScoped<CalculateDiscountUseCase>();
+    }
+
+    private static void AddProductUseCases(this IServiceCollection services)
+    {
+        services.AddScoped<ListProductsUseCase>();
+        services.AddScoped<GetProductUseCase>();
+    }
+
+    private static void AddCustomerUseCases(this IServiceCollection services)
+    {
+        services.AddScoped<ListCustomersUseCase>();
+        services.AddScoped<GetCustomerUseCase>();
+        services.AddScoped<SearchCustomerByNitUseCase>();
     }
 }

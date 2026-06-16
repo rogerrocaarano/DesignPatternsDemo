@@ -1,7 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Controllers.DTOs;
-using WebApi.Domain.Repositories;
+using WebApi.Customers.Actions;
+using WebApi.Customers.UseCases;
 
 namespace WebApi.Controllers;
 
@@ -11,11 +11,18 @@ namespace WebApi.Controllers;
 [Tags("Customers")]
 public class CustomersController : ControllerBase
 {
-    private readonly ICustomersRepository _repository;
+    private readonly ListCustomersUseCase _listCustomersUseCase;
+    private readonly GetCustomerUseCase _getCustomerUseCase;
+    private readonly SearchCustomerByNitUseCase _searchCustomerByNitUseCase;
 
-    public CustomersController(ICustomersRepository repository)
+    public CustomersController(
+        ListCustomersUseCase listCustomersUseCase,
+        GetCustomerUseCase getCustomerUseCase,
+        SearchCustomerByNitUseCase searchCustomerByNitUseCase)
     {
-        _repository = repository;
+        _listCustomersUseCase = listCustomersUseCase;
+        _getCustomerUseCase = getCustomerUseCase;
+        _searchCustomerByNitUseCase = searchCustomerByNitUseCase;
     }
 
     [HttpGet]
@@ -25,14 +32,14 @@ public class CustomersController : ControllerBase
     {
         if (string.IsNullOrWhiteSpace(nit))
         {
-            var customers = await _repository.ListAllCustomersAsync();
-            return Ok(customers.Select(CustomerDto.FromEntity));
+            var customers = await _listCustomersUseCase.RealizeAsync();
+            return Ok(customers);
         }
 
-        var customer = await _repository.SearchCustomerByNitAsync(nit);
+        var customer = await _searchCustomerByNitUseCase.RealizeAsync(new SearchCustomerByNitAction(nit));
         return customer is null
             ? NotFound()
-            : Ok(CustomerDto.FromEntity(customer));
+            : Ok(customer);
     }
 
     [HttpGet("{id:guid}")]
@@ -40,9 +47,9 @@ public class CustomersController : ControllerBase
     [EndpointSummary("Obtiene el detalle de un cliente.")]
     public async Task<IActionResult> GetCustomer(Guid id)
     {
-        var customer = await _repository.SearchCustomerByIdAsync(id);
+        var customer = await _getCustomerUseCase.RealizeAsync(new GetCustomerAction(id));
         return customer is null
             ? NotFound()
-            : Ok(CustomerDto.FromEntity(customer));
+            : Ok(customer);
     }
 }

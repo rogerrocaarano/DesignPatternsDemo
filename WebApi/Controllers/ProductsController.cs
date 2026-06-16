@@ -1,7 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Controllers.DTOs;
-using WebApi.Domain.Repositories;
+using WebApi.Products.Actions;
+using WebApi.Products.UseCases;
 
 namespace WebApi.Controllers;
 
@@ -11,11 +11,13 @@ namespace WebApi.Controllers;
 [Tags("Products")]
 public class ProductsController : ControllerBase
 {
-    private readonly IProductsRepository _repository;
+    private readonly ListProductsUseCase _listProductsUseCase;
+    private readonly GetProductUseCase _getProductUseCase;
 
-    public ProductsController(IProductsRepository repository)
+    public ProductsController(ListProductsUseCase listProductsUseCase, GetProductUseCase getProductUseCase)
     {
-        _repository = repository;
+        _listProductsUseCase = listProductsUseCase;
+        _getProductUseCase = getProductUseCase;
     }
 
     [HttpGet]
@@ -23,8 +25,8 @@ public class ProductsController : ControllerBase
     [EndpointSummary("Lista todos los productos.")]
     public async Task<IActionResult> ListProducts()
     {
-        var products = await _repository.ListAllProductsAsync();
-        return Ok(products.Select(ProductDto.FromEntity));
+        var products = await _listProductsUseCase.RealizeAsync();
+        return Ok(products);
     }
 
     [HttpGet("{id:guid}")]
@@ -32,9 +34,9 @@ public class ProductsController : ControllerBase
     [EndpointSummary("Obtiene el detalle de un producto.")]
     public async Task<IActionResult> GetProduct(Guid id)
     {
-        var product = await _repository.SearchProductByIdAsync(id);
+        var product = await _getProductUseCase.RealizeAsync(new GetProductAction(id));
         return product is null
             ? NotFound()
-            : Ok(ProductDto.FromEntity(product));
+            : Ok(product);
     }
 }
