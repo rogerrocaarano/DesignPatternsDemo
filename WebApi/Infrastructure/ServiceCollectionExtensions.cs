@@ -1,12 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using WebApi.Customers;
-using WebApi.Discounts;
+using WebApi.Domain.Repositories;
 using WebApi.Infrastructure.Data;
 using WebApi.Infrastructure.Repositories;
-using WebApi.Products;
-using WebApi.Sales;
 using WebApi.Sales.Handlers;
-using WebApi.Sales.Pipelines;
+using WebApi.Sales.Strategies.Discounts;
+using WebApi.Sales.UseCases;
 
 namespace WebApi.Infrastructure;
 
@@ -50,7 +48,7 @@ public static class ServiceCollectionExtensions
 
     private static void AddDiscounts(this IServiceCollection services)
     {
-        services.AddScoped<DiscountService>();
+        services.AddScoped<DiscountStrategyContext>();
     }
 
     private static void AddSalesPipeline(this IServiceCollection services)
@@ -59,7 +57,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<CreateSaleHandler>();
         services.AddTransient<ApplyDiscountHandler>();
         services.AddTransient<PersistSaleHandler>();
-        services.AddScoped<SalePipeline>();
-        services.AddScoped<CalculateDiscountPipeline>();
+        services.AddScoped<SaleCreationUseCase>();
+        services.AddScoped<CalculateDiscountUseCase>();
     }
 }

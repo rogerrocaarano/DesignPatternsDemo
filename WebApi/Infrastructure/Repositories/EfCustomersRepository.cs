@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using WebApi.Customers;
+using WebApi.Domain.Entities;
+using WebApi.Domain.Repositories;
 using WebApi.Infrastructure.Data;
 
 namespace WebApi.Infrastructure.Repositories;
@@ -10,14 +11,6 @@ public class EfCustomersRepository(AppDbContext dbContext) : ICustomersRepositor
     {
         return await dbContext.Customers
             .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public async Task<IReadOnlyList<Guid>> ListAllCustomerIdsAsync()
-    {
-        return await dbContext.Customers
-            .AsNoTracking()
-            .Select(customer => customer.Id)
             .ToListAsync();
     }
 

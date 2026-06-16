@@ -8,7 +8,7 @@ import { RegisterSaleRequest, SaleResult } from '../models/sale.model';
 @Injectable({ providedIn: 'root' })
 export class SalesService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${environment.apiBaseUrl}/sales`;
+  private readonly baseUrl = `${environment.apiBaseUrl}/v1/sales`;
 
   /** Simulates the sale and returns the applied discount without persisting it. */
   calculateDiscount(request: RegisterSaleRequest): Observable<SaleResult> {

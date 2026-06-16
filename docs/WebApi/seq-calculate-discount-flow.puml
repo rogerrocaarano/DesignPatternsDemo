@@ -13,7 +13,7 @@ participant SearchOrCreateCustomerHandler
 participant CreateSaleHandler
 participant ApplyDiscountHandler
 
-FrontEnd -> SalesEndpoints : POST /sales/discount\n(SaleRequest)
+FrontEnd -> SalesEndpoints : POST /v1/sales/discount\n(SaleRequest)
 activate SalesEndpoints
 
 SalesEndpoints -> CalculateDiscountPipeline : HandleRequest(request)

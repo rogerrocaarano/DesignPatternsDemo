@@ -1,7 +1,7 @@
 @startuml SaleAmountDiscount
 
 class SaleAmountDiscount {
-    +CalculateDiscount(customer: Customer?, saleAmount: decimal) : Discount?
+    +CalculateDiscount(saleAmount: decimal) : Discount?
 }
 
 @enduml

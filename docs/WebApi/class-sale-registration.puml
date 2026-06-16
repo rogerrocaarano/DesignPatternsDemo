@@ -6,7 +6,10 @@ skinparam wrapWidth 250
 skinparam maxMessageSize 150
 !include classes/SalesEndpoints.puml
 !include classes/SaleRequest.puml
+!include classes/SaleItemRequest.puml
+!include classes/ISalePipeline.puml
 !include classes/SalePipeline.puml
+!include classes/CalculateDiscountPipeline.puml
 !include classes/SaleBaseHandler.puml
 !include classes/SearchOrCreateCustomerHandler.puml
 !include classes/CreateSaleHandler.puml
@@ -28,7 +31,12 @@ skinparam maxMessageSize 150
 !include classes/SaleAmountDiscount.puml
 
 SalesEndpoints ..> SalePipeline
+SalesEndpoints ..> CalculateDiscountPipeline
+ISalePipeline <|.. SalePipeline
+ISalePipeline <|.. CalculateDiscountPipeline
 SalePipeline o-- SaleBaseHandler
+CalculateDiscountPipeline o-- SaleBaseHandler
+SaleRequest o-- SaleItemRequest
 SaleBaseHandler <.. SaleBaseHandler : Handler siguiente
 SaleBaseHandler <|-- SearchOrCreateCustomerHandler
 SaleBaseHandler <|-- CreateSaleHandler

@@ -1,5 +1,6 @@
-using WebApi.Products;
-using WebApi.Sales.Pipelines;
+using WebApi.Domain.Entities;
+using WebApi.Domain.Exceptions;
+using WebApi.Domain.Repositories;
 
 namespace WebApi.Sales.Handlers;
 
@@ -12,12 +13,12 @@ public class CreateSaleHandler : SaleBaseHandler
         _productsRepository = productsRepository;
     }
 
-    public override async Task HandleAsync(SaleContext context)
+    public override async Task HandleAsync(SaleHandlerContext handlerContext)
     {
-        var customer = context.CustomerEntity!;
+        var customer = handlerContext.CustomerEntity!;
         var sale = new Sale(customer);
 
-        foreach (var item in context.SaleRequest.Items)
+        foreach (var item in handlerContext.Items)
         {
             var product = await _productsRepository.SearchProductByIdAsync(item.ProductId)
                           ?? throw new ProductNotFoundException(item.ProductId);
@@ -25,7 +26,7 @@ public class CreateSaleHandler : SaleBaseHandler
             sale.AddProduct(product, item.Quantity);
         }
 
-        context.SaleEntity = sale;
-        await base.HandleAsync(context);
+        handlerContext.SaleEntity = sale;
+        await base.HandleAsync(handlerContext);
     }
 }

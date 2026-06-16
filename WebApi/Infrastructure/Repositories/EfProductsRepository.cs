@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using WebApi.Domain.Entities;
+using WebApi.Domain.Repositories;
 using WebApi.Infrastructure.Data;
-using WebApi.Products;
 
 namespace WebApi.Infrastructure.Repositories;
 
@@ -10,14 +11,6 @@ public class EfProductsRepository(AppDbContext dbContext) : IProductsRepository
     {
         return await dbContext.Products
             .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public async Task<IReadOnlyList<Guid>> ListAllProductIdsAsync()
-    {
-        return await dbContext.Products
-            .AsNoTracking()
-            .Select(product => product.Id)
             .ToListAsync();
     }
 

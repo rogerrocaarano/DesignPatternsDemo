@@ -1,0 +1,9 @@
+@startuml CalculateDiscountPipeline
+
+class CalculateDiscountPipeline {
+    -_firstHandler : SaleBaseHandler
+    +CalculateDiscountPipeline(searchOrCreateCustomer: SearchOrCreateCustomerHandler, createSale: CreateSaleHandler, applyDiscount: ApplyDiscountHandler)
+    +HandleRequest(request: SaleRequest) : Task<SaleContext>
+}
+
+@enduml

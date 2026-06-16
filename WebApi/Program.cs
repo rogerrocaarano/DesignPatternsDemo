@@ -1,11 +1,24 @@
+using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
-using WebApi.Api.Endpoints;
 using WebApi.Infrastructure.Data;
 using static WebApi.Infrastructure.ServiceCollectionExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddApiVersioning(options =>
+    {
+        options.ApiVersionReader = new UrlSegmentApiVersionReader();
+        options.AssumeDefaultVersionWhenUnspecified = false;
+        options.ReportApiVersions = true;
+    })
+    .AddMvc()
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
+builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddApplicationServices(builder.Configuration);
 
@@ -27,8 +40,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapCustomerEndpoints();
-app.MapProductEndpoints();
-app.MapSaleEndpoints();
+app.MapControllers();
 
 app.Run();

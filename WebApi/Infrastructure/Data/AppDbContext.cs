@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WebApi.Customers;
-using WebApi.Products;
+using WebApi.Domain.Entities;
 using WebApi.Sales;
 
 namespace WebApi.Infrastructure.Data;

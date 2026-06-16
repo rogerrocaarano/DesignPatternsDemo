@@ -4,7 +4,6 @@ class EfCustomersRepository {
     -dbContext : AppDbContext
     +EfCustomersRepository(dbContext: AppDbContext)
     +ListAllCustomersAsync() : Task<IReadOnlyList<Customer>>
-    +ListAllCustomerIdsAsync() : Task<IReadOnlyList<Guid>>
     +SearchCustomerByNitAsync(nit: string) : Task<Customer?>
     +SearchCustomerByIdAsync(id: Guid) : Task<Customer?>
     +UpsertCustomerAsync(customer: Customer) : Task<Customer>

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WebApi.Products;
+using WebApi.Domain.Entities;
 
 namespace WebApi.Infrastructure.Data.Mapping;
 

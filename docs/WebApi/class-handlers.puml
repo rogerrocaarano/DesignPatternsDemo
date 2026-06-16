@@ -7,7 +7,9 @@ skinparam maxMessageSize 150
 
 !include classes/SalesEndpoints.puml
 !include classes/SaleRequest.puml
+!include classes/ISalePipeline.puml
 !include classes/SalePipeline.puml
+!include classes/CalculateDiscountPipeline.puml
 !include classes/SaleBaseHandler.puml
 !include classes/SearchOrCreateCustomerHandler.puml
 !include classes/CreateSaleHandler.puml
@@ -17,7 +19,11 @@ skinparam maxMessageSize 150
 
 SalesEndpoints .up.> SaleRequest
 SalesEndpoints ..> SalePipeline
+SalesEndpoints ..> CalculateDiscountPipeline
+ISalePipeline <|.. SalePipeline
+ISalePipeline <|.. CalculateDiscountPipeline
 SalePipeline o-- SaleBaseHandler
+CalculateDiscountPipeline o-- SaleBaseHandler
 SaleBaseHandler <.. SaleBaseHandler : Handler siguiente
 
 ' Herencia tradicional (se mantiene vertical con --)

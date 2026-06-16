@@ -1,0 +1,7 @@
+@startuml ISalePipeline
+
+interface ISalePipeline {
+    +HandleRequest(request: SaleRequest) : Task<SaleContext>
+}
+
+@enduml

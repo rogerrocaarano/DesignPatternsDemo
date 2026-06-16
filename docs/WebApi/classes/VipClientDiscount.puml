@@ -1,7 +1,7 @@
 @startuml VipClientDiscount
 
 class VipClientDiscount {
-    +CalculateDiscount(customer: Customer?, saleAmount: decimal) : Discount?
+    +CalculateDiscount(saleAmount: decimal) : Discount?
 }
 
 @enduml

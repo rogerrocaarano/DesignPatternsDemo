@@ -8,11 +8,11 @@ import { Customer } from '../models/customer.model';
 @Injectable({ providedIn: 'root' })
 export class CustomersService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${environment.apiBaseUrl}/customers`;
+  private readonly baseUrl = `${environment.apiBaseUrl}/v1/customers`;
 
   /** Returns the customer for the given NIT, or null when not found (404). */
   getByNit(nit: string): Observable<Customer | null> {
-    return this.http.get<Customer>(`${this.baseUrl}/by-nit/${encodeURIComponent(nit)}`).pipe(
+    return this.http.get<Customer>(this.baseUrl, { params: { nit } }).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 404) {
           return of(null);

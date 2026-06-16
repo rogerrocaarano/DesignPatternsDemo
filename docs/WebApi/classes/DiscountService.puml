@@ -1,9 +1,9 @@
 @startuml DiscountService
 
 class DiscountService {
-    -strategies : IEnumerable<IDiscountStrategy>
-    +DiscountService(strategies: IEnumerable<IDiscountStrategy>)
-    +GetDiscount(customer: Customer?, saleAmount: decimal) : Discount?
+    -_strategy : IDiscountStrategy?
+    +SetStrategy(strategy: IDiscountStrategy) : void
+    +GetDiscount(saleAmount: decimal) : Discount?
 }
 
 @enduml

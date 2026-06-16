@@ -1,7 +1,7 @@
 @startuml IDiscountStrategy
 
 interface IDiscountStrategy {
-    +CalculateDiscount(customer: Customer?, saleAmount: decimal) : Discount?
+    +CalculateDiscount(saleAmount: decimal) : Discount?
 }
 
 @enduml

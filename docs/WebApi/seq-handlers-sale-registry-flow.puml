@@ -14,7 +14,7 @@ participant CreateSaleHandler
 participant ApplyDiscountHandler
 participant PersistSaleHandler
 
-FrontEnd -> SalesEndpoints : POST /sales\n(SaleRequest)
+FrontEnd -> SalesEndpoints : POST /v1/sales\n(SaleRequest)
 activate SalesEndpoints
 
 SalesEndpoints -> SalePipeline : HandleRequest(request)

@@ -1,15 +1,13 @@
-﻿using WebApi.Sales.Pipelines;
-
-namespace WebApi.Sales.Handlers;
+﻿namespace WebApi.Sales.Handlers;
 
 public abstract class SaleBaseHandler
 {
     private SaleBaseHandler? _next;
 
-    public virtual async Task HandleAsync(SaleContext context)
+    public virtual async Task HandleAsync(SaleHandlerContext handlerContext)
     {
         if (_next is null) return;
-        await _next.HandleAsync(context);
+        await _next.HandleAsync(handlerContext);
     }
 
     public SaleBaseHandler SetNext(SaleBaseHandler next)

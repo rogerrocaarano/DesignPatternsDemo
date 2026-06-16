@@ -1,48 +1,46 @@
-using WebApi.Discounts;
-using WebApi.Discounts.Strategies;
-using WebApi.Sales.Pipelines;
+using WebApi.Sales.Strategies.Discounts;
 
 namespace WebApi.Sales.Handlers;
 
 public class ApplyDiscountHandler : SaleBaseHandler
 {
-    private readonly DiscountService _discountService;
+    private readonly DiscountStrategyContext _discountStrategyContext;
 
-    public ApplyDiscountHandler(DiscountService discountService)
+    public ApplyDiscountHandler(DiscountStrategyContext discountStrategyContext)
     {
-        _discountService = discountService;
+        _discountStrategyContext = discountStrategyContext;
     }
 
-    public override async Task HandleAsync(SaleContext context)
+    public override async Task HandleAsync(SaleHandlerContext handlerContext)
     {
-        var sale = context.SaleEntity!;
+        var sale = handlerContext.SaleEntity!;
         var total = sale.CalculateTotal();
 
-        var strategy = SelectStrategy(context, total);
+        var strategy = SelectStrategy(handlerContext, total);
 
         if (strategy is null)
         {
-            context.SaleDiscount = null;
+            handlerContext.SaleDiscount = null;
         }
         else
         {
-            _discountService.SetStrategy(strategy);
-            context.SaleDiscount = _discountService.GetDiscount(total);
+            _discountStrategyContext.SetStrategy(strategy);
+            handlerContext.SaleDiscount = _discountStrategyContext.GetDiscount(total);
         }
 
-        await base.HandleAsync(context);
+        await base.HandleAsync(handlerContext);
     }
 
-    private static IDiscountStrategy? SelectStrategy(SaleContext context, decimal total)
+    private static IDiscountStrategy? SelectStrategy(SaleHandlerContext handlerContext, decimal total)
     {
-        if (context.IsNewCustomer)
-            return new NewCustomerDiscount();
+        if (handlerContext.IsNewCustomer)
+            return new NewCustomerDiscountStrategy();
 
-        if (context.CustomerEntity?.TotalSales >= 10_000m)
-            return new VipClientDiscount();
+        if (handlerContext.CustomerEntity?.TotalSales >= 10_000m)
+            return new VipClientDiscountStrategy();
 
         if (total >= 1_000m)
-            return new SaleAmountDiscount();
+            return new SaleAmountDiscountStrategy();
 
         return null;
     }

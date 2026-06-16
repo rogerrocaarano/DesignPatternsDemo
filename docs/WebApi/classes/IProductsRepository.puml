@@ -2,7 +2,6 @@
 
 interface IProductsRepository {
     +ListAllProductsAsync() : Task<IReadOnlyList<Product>>
-    +ListAllProductIdsAsync() : Task<IReadOnlyList<Guid>>
     +SearchProductByIdAsync(id: Guid) : Task<Product?>
 }
 
