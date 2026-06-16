@@ -1,0 +1,36 @@
+@startuml
+skinparam wrapWidth 350
+skinparam monochrome true
+
+
+!include classes/SaleCreationUseCase.puml
+!include classes/CalculateDiscountUseCase.puml
+!include classes/SaleBaseHandler.puml
+!include classes/SearchOrCreateCustomerHandler.puml
+!include classes/CreateSaleHandler.puml
+!include classes/ApplyDiscountHandler.puml
+!include classes/PersistSaleHandler.puml
+!include classes/SaleHandlerContext.puml
+!include classes/ICustomersRepository.puml
+!include classes/IProductsRepository.puml
+!include classes/ISalesRepository.puml
+!include classes/DiscountStrategyContext.puml
+
+SaleCreationUseCase o-down- SaleBaseHandler
+CalculateDiscountUseCase o-down- SaleBaseHandler
+
+SaleBaseHandler <-left- SaleBaseHandler : _next
+SaleBaseHandler <|-down- SearchOrCreateCustomerHandler
+SaleBaseHandler <|-down- CreateSaleHandler
+SaleBaseHandler <|-down- ApplyDiscountHandler
+SaleBaseHandler <|-down- PersistSaleHandler
+
+SaleBaseHandler .left.> SaleHandlerContext
+
+SearchOrCreateCustomerHandler .down.> ICustomersRepository
+CreateSaleHandler .down.> IProductsRepository
+ApplyDiscountHandler .down.> DiscountStrategyContext
+PersistSaleHandler .down.> ICustomersRepository
+PersistSaleHandler .down.> ISalesRepository
+
+@enduml

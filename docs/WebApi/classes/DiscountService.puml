@@ -1,9 +1,0 @@
-@startuml DiscountService
-
-class DiscountService {
-    -_strategy : IDiscountStrategy?
-    +SetStrategy(strategy: IDiscountStrategy) : void
-    +GetDiscount(saleAmount: decimal) : Discount?
-}
-
-@enduml

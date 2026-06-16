@@ -1,9 +1,10 @@
 @startuml ApplyDiscountHandler
 
 class ApplyDiscountHandler {
-    -_discountService : DiscountService
-    +ApplyDiscountHandler(discountService: DiscountService)
-    +HandleAsync(context: SaleContext) : Task
+    -_discountStrategyContext : DiscountStrategyContext
+    +ApplyDiscountHandler(discountStrategyContext: DiscountStrategyContext)
+    +HandleAsync(handlerContext: SaleHandlerContext) : Task
+    -{static} SelectStrategy(handlerContext: SaleHandlerContext, total: decimal) : IDiscountStrategy?
 }
 
 @enduml

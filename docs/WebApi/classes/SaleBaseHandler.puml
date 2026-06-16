@@ -2,7 +2,7 @@
 
 abstract class SaleBaseHandler {
     -_next : SaleBaseHandler?
-    +HandleAsync(context: SaleContext) : Task
+    +HandleAsync(handlerContext: SaleHandlerContext) : Task
     +SetNext(next: SaleBaseHandler) : SaleBaseHandler
 }
 

@@ -1,0 +1,10 @@
+@startuml ProductResult
+
+class ProductResult <<record>> {
+    +Id : Guid
+    +Name : string
+    +UnitCost : decimal
+    +{static} FromEntity(product: Product) : ProductResult
+}
+
+@enduml

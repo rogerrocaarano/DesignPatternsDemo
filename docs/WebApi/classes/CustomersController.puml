@@ -1,0 +1,11 @@
+@startuml CustomersController
+
+class CustomersController {
+    -_listCustomersUseCase : ListCustomersUseCase
+    -_getCustomerUseCase : GetCustomerUseCase
+    -_searchCustomerByNitUseCase : SearchCustomerByNitUseCase
+    +ListCustomers(nit: string?) : Task<IActionResult>
+    +GetCustomer(id: Guid) : Task<IActionResult>
+}
+
+@enduml

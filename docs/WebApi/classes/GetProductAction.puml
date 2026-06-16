@@ -1,0 +1,7 @@
+@startuml GetProductAction
+
+class GetProductAction <<record>> {
+    +Id : Guid
+}
+
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+skinparam wrapWidth 350
+skinparam monochrome true
+
+!include classes/Customer.puml
+!include classes/Product.puml
+!include classes/Sale.puml
+!include classes/SaleItem.puml
+
+!include classes/ICustomersRepository.puml
+!include classes/IProductsRepository.puml
+!include classes/ISalesRepository.puml
+!include classes/EfCustomersRepository.puml
+!include classes/EfProductsRepository.puml
+!include classes/EfSalesRepository.puml
+!include classes/AppDbContext.puml
+
+Sale o-- SaleItem
+SaleItem .down.> Product
+
+ICustomersRepository .up.> Customer
+IProductsRepository .up.> Product
+ISalesRepository .up.> Sale
+
+ICustomersRepository <|.down. EfCustomersRepository
+IProductsRepository <|.down. EfProductsRepository
+ISalesRepository <|.down. EfSalesRepository
+
+EfCustomersRepository .down.> AppDbContext
+EfProductsRepository .down.> AppDbContext
+EfSalesRepository .down.> AppDbContext
+
+@enduml

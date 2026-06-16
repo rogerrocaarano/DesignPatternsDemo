@@ -1,7 +1,0 @@
-@startuml SaleAmountDiscount
-
-class SaleAmountDiscount {
-    +CalculateDiscount(saleAmount: decimal) : Discount?
-}
-
-@enduml

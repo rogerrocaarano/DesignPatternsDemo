@@ -4,7 +4,7 @@ class PersistSaleHandler {
     -_customersRepository : ICustomersRepository
     -_salesRepository : ISalesRepository
     +PersistSaleHandler(salesRepository: ISalesRepository, customersRepository: ICustomersRepository)
-    +HandleAsync(context: SaleContext) : Task
+    +HandleAsync(handlerContext: SaleHandlerContext) : Task
 }
 
 @enduml

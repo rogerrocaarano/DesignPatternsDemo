@@ -1,0 +1,8 @@
+@startuml ListCustomersUseCase
+
+class ListCustomersUseCase {
+    -_repository : ICustomersRepository
+    +RealizeAsync() : Task<IReadOnlyList<CustomerResult>>
+}
+
+@enduml

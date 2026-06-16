@@ -1,0 +1,9 @@
+@startuml CalculateDiscountUseCase
+
+class CalculateDiscountUseCase {
+    -_firstHandler : SaleBaseHandler
+    +CalculateDiscountUseCase(searchOrCreateCustomer: SearchOrCreateCustomerHandler, createSale: CreateSaleHandler, applyDiscount: ApplyDiscountHandler)
+    +RealizeAsync(action: CalculateDiscountAction) : Task<CalculateDiscountResult>
+}
+
+@enduml

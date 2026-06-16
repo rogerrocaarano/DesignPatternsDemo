@@ -1,9 +1,0 @@
-@startuml SalesEndpoints
-
-class SalesEndpoints <<static>> {
-    +{static} MapSaleEndpoints(app: IEndpointRouteBuilder) : IEndpointRouteBuilder
-    -{static} CalculateSaleDiscount(request: SaleRequest, pipeline: CalculateDiscountPipeline) : Task<IResult>
-    -{static} RegisterSale(request: SaleRequest, pipeline: SalePipeline) : Task<IResult>
-}
-
-@enduml

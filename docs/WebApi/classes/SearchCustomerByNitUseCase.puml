@@ -1,0 +1,8 @@
+@startuml SearchCustomerByNitUseCase
+
+class SearchCustomerByNitUseCase {
+    -_repository : ICustomersRepository
+    +RealizeAsync(action: SearchCustomerByNitAction) : Task<CustomerResult?>
+}
+
+@enduml

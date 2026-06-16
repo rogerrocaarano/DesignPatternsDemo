@@ -1,0 +1,41 @@
+@startuml
+skinparam wrapWidth 350
+skinparam monochrome true
+
+participant ApplyDiscountHandler
+participant SaleHandlerContext
+participant DiscountStrategyContext
+participant IDiscountStrategy
+
+-> ApplyDiscountHandler : HandleAsync(handlerContext)
+activate ApplyDiscountHandler
+
+ApplyDiscountHandler -> SaleHandlerContext : sale = SaleEntity
+ApplyDiscountHandler -> ApplyDiscountHandler : total = sale.CalculateTotal()
+
+ApplyDiscountHandler -> ApplyDiscountHandler : SelectStrategy(handlerContext, total)
+note right
+    Prioridad: cliente nuevo > VIP (TotalSales >= 10 000)
+    > monto de venta (total >= 1 000) > ninguna
+end note
+
+alt estrategia seleccionada
+    ApplyDiscountHandler -> DiscountStrategyContext : SetStrategy(strategy)
+    ApplyDiscountHandler -> DiscountStrategyContext : GetDiscount(total)
+    activate DiscountStrategyContext
+    DiscountStrategyContext -> IDiscountStrategy : CalculateDiscount(total)
+    activate IDiscountStrategy
+    IDiscountStrategy --> DiscountStrategyContext : discount
+    deactivate IDiscountStrategy
+    DiscountStrategyContext --> ApplyDiscountHandler : discount
+    deactivate DiscountStrategyContext
+    ApplyDiscountHandler -> SaleHandlerContext : SaleDiscount = discount
+else ninguna estrategia aplica
+    ApplyDiscountHandler -> SaleHandlerContext : SaleDiscount = null
+end
+
+ApplyDiscountHandler -> ApplyDiscountHandler : base.HandleAsync(handlerContext)
+note right : delega al siguiente handler
+deactivate ApplyDiscountHandler
+
+@enduml

@@ -1,0 +1,39 @@
+@startuml
+skinparam wrapWidth 350
+skinparam monochrome true
+
+participant PersistSaleHandler
+participant SaleHandlerContext
+participant ICustomersRepository
+participant ISalesRepository
+
+-> PersistSaleHandler : HandleAsync(handlerContext)
+activate PersistSaleHandler
+
+PersistSaleHandler -> SaleHandlerContext : sale = SaleEntity
+PersistSaleHandler -> SaleHandlerContext : customer = CustomerEntity
+PersistSaleHandler -> SaleHandlerContext : discount = SaleDiscount
+
+PersistSaleHandler -> PersistSaleHandler : saleAmount = sale.CalculateTotal()
+
+alt discount != null
+    PersistSaleHandler -> PersistSaleHandler : saleAmount -= discount.Amount
+end
+
+PersistSaleHandler -> PersistSaleHandler : customer.IncreaseTotalSales(saleAmount)
+
+PersistSaleHandler -> ICustomersRepository : UpsertCustomerAsync(customer)
+activate ICustomersRepository
+ICustomersRepository --> PersistSaleHandler : customer
+deactivate ICustomersRepository
+
+PersistSaleHandler -> ISalesRepository : SaveSaleAsync(sale)
+activate ISalesRepository
+ISalesRepository --> PersistSaleHandler : sale
+deactivate ISalesRepository
+
+PersistSaleHandler -> PersistSaleHandler : base.HandleAsync(handlerContext)
+note right : último handler de la cadena, no delega a nadie
+deactivate PersistSaleHandler
+
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+skinparam wrapWidth 350
+skinparam monochrome true
+
+actor FrontEnd
+participant SalesController
+participant SaleCreationUseCase
+participant SearchOrCreateCustomerHandler
+participant CreateSaleHandler
+participant ApplyDiscountHandler
+participant PersistSaleHandler
+
+FrontEnd -> SalesController : POST /v1/sales\n(CreateSaleRequest)
+activate SalesController
+
+SalesController -> SaleCreationUseCase : RealizeAsync(SaleCreationAction)
+activate SaleCreationUseCase
+
+SaleCreationUseCase -> SearchOrCreateCustomerHandler : HandleAsync(handlerContext)
+SearchOrCreateCustomerHandler -> CreateSaleHandler : HandleAsync(handlerContext)
+CreateSaleHandler -> ApplyDiscountHandler : HandleAsync(handlerContext)
+ApplyDiscountHandler -> PersistSaleHandler : HandleAsync(handlerContext)
+
+SaleCreationUseCase --> SalesController : SaleCreationResult
+deactivate SaleCreationUseCase
+
+SalesController --> FrontEnd : 201 Created\n(SaleCreationResult)
+deactivate SalesController
+
+@enduml

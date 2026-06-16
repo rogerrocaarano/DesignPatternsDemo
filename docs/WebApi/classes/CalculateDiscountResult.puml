@@ -1,0 +1,9 @@
+@startuml CalculateDiscountResult
+
+class CalculateDiscountResult <<record>> {
+    +SubtotalBeforeDiscount : decimal
+    +Discount : Discount?
+    +{static} FromContext(context: SaleHandlerContext) : CalculateDiscountResult
+}
+
+@enduml

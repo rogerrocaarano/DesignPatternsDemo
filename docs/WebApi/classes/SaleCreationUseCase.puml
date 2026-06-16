@@ -1,0 +1,9 @@
+@startuml SaleCreationUseCase
+
+class SaleCreationUseCase {
+    -_firstHandler : SaleBaseHandler
+    +SaleCreationUseCase(searchOrCreateCustomer: SearchOrCreateCustomerHandler, createSale: CreateSaleHandler, applyDiscount: ApplyDiscountHandler, persistSale: PersistSaleHandler)
+    +RealizeAsync(action: SaleCreationAction) : Task<SaleCreationResult>
+}
+
+@enduml

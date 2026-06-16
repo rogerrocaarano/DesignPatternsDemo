@@ -1,0 +1,10 @@
+@startuml SaleCreationResult
+
+class SaleCreationResult <<record>> {
+    +SaleId : Guid
+    +SubtotalBeforeDiscount : decimal
+    +Discount : Discount?
+    +{static} FromContext(handlerContext: SaleHandlerContext) : SaleCreationResult
+}
+
+@enduml

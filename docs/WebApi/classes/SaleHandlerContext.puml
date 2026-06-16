@@ -1,0 +1,15 @@
+@startuml SaleHandlerContext
+
+class SaleHandlerContext {
+    +CustomerFullName : string
+    +CustomerNit : string
+    +Items : List<SaleItemValue>
+    +CustomerEntity : Customer?
+    +IsNewCustomer : bool
+    +SaleEntity : Sale?
+    +SaleDiscount : Discount?
+    +{static} CreateFromAction(action: SaleCreationAction) : SaleHandlerContext
+    +{static} CreateFromAction(action: CalculateDiscountAction) : SaleHandlerContext
+}
+
+@enduml

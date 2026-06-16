@@ -1,0 +1,7 @@
+@startuml SearchCustomerByNitAction
+
+class SearchCustomerByNitAction <<record>> {
+    +Nit : string
+}
+
+@enduml

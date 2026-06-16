@@ -1,0 +1,54 @@
+@startuml architecture-overview
+!theme plain
+title Arquitectura en Capas — DesignPatternsDemo WebApi
+
+skinparam backgroundColor #FAFAFA
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowColor #444444
+skinparam ArrowThickness 1.5
+skinparam RectangleBorderThickness 2
+skinparam RectangleFontStyle bold
+
+left to right direction
+
+actor "Cliente\nAngular" as Angular #D6EAF8
+
+rectangle "  Presentación  \n(Controllers)" as Presentacion #AED6F1 {
+    component "SalesController" as SC
+    component "ProductsController" as PC
+    component "CustomersController" as CC
+}
+
+rectangle "  Aplicación / Negocio  \n(Use Cases · Handlers · Strategies)" as Aplicacion #A9DFBF {
+    component "Use Cases" as UC
+    component "Chain of\nResponsibility" as COR
+    component "Strategy\nPattern" as SP
+}
+
+rectangle "  Dominio  \n(Entities · Value Objects · Interfaces)" as Dominio #FAD7A0 {
+    component "Sale · Customer\nProduct" as Entities
+    component "Repository\nInterfaces" as RepoInterfaces
+}
+
+rectangle "  Infraestructura  \n(EF Core · Repositories · SQLite)" as Infra #F1948A {
+    component "EfSalesRepository\nEfCustomersRepository\nEfProductsRepository" as Repos
+    component "AppDbContext" as DbCtx
+}
+
+database "SQLite" as DB #E8DAEF
+
+Angular --> Presentacion : HTTP JSON\nREST /v1/...
+Presentacion ..> Aplicacion : delega\nActions
+Aplicacion ..> Dominio : usa\nentidades e\ninterfaces
+Infra .up.|> Dominio : implementa\ninterfaces
+Infra --> DB : EF Core\nORM
+
+note bottom of Dominio
+  Las dependencias apuntan
+  siempre hacia el Dominio.
+  El Dominio no conoce
+  ninguna capa externa.
+end note
+
+@enduml

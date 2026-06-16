@@ -3,7 +3,7 @@
 class CreateSaleHandler {
     -_productsRepository : IProductsRepository
     +CreateSaleHandler(productsRepository: IProductsRepository)
-    +HandleAsync(context: SaleContext) : Task
+    +HandleAsync(handlerContext: SaleHandlerContext) : Task
 }
 
 @enduml

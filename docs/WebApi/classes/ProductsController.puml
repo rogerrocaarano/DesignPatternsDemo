@@ -1,0 +1,10 @@
+@startuml ProductsController
+
+class ProductsController {
+    -_listProductsUseCase : ListProductsUseCase
+    -_getProductUseCase : GetProductUseCase
+    +ListProducts() : Task<IActionResult>
+    +GetProduct(id: Guid) : Task<IActionResult>
+}
+
+@enduml

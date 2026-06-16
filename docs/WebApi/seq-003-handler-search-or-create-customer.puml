@@ -1,0 +1,29 @@
+@startuml
+skinparam wrapWidth 350
+skinparam monochrome true
+
+participant SearchOrCreateCustomerHandler
+participant ICustomersRepository
+participant SaleHandlerContext
+
+-> SearchOrCreateCustomerHandler : HandleAsync(handlerContext)
+activate SearchOrCreateCustomerHandler
+
+SearchOrCreateCustomerHandler -> ICustomersRepository : SearchCustomerByNitAsync(CustomerNit)
+activate ICustomersRepository
+ICustomersRepository --> SearchOrCreateCustomerHandler : customer?
+deactivate ICustomersRepository
+
+alt customer encontrado
+    SearchOrCreateCustomerHandler -> SaleHandlerContext : IsNewCustomer = false
+    SearchOrCreateCustomerHandler -> SaleHandlerContext : CustomerEntity = existingCustomer
+else cliente nuevo
+    SearchOrCreateCustomerHandler -> SaleHandlerContext : IsNewCustomer = true
+    SearchOrCreateCustomerHandler -> SaleHandlerContext : CustomerEntity = new Customer(nit, fullName)
+end
+
+SearchOrCreateCustomerHandler -> SearchOrCreateCustomerHandler : base.HandleAsync(handlerContext)
+note right : delega al siguiente handler
+deactivate SearchOrCreateCustomerHandler
+
+@enduml

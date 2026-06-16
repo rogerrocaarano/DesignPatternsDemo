@@ -1,7 +1,7 @@
 @startuml ISalesRepository
 
 interface ISalesRepository {
-    +SaveSale(newSale: Sale) : Task<Sale>
+    +SaveSaleAsync(newSale: Sale) : Task<Sale>
 }
 
 @enduml

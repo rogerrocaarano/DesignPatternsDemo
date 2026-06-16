@@ -1,0 +1,29 @@
+@startuml
+skinparam wrapWidth 350
+skinparam monochrome true
+
+actor FrontEnd
+participant SalesController
+participant CalculateDiscountUseCase
+participant SearchOrCreateCustomerHandler
+participant CreateSaleHandler
+participant ApplyDiscountHandler
+
+FrontEnd -> SalesController : POST /v1/sales/discount\n(CreateSaleRequest)
+activate SalesController
+
+SalesController -> CalculateDiscountUseCase : RealizeAsync(CalculateDiscountAction)
+activate CalculateDiscountUseCase
+
+CalculateDiscountUseCase -> SearchOrCreateCustomerHandler : HandleAsync(handlerContext)
+SearchOrCreateCustomerHandler -> CreateSaleHandler : HandleAsync(handlerContext)
+CreateSaleHandler -> ApplyDiscountHandler : HandleAsync(handlerContext)
+note right : cadena termina aquí, sin persistir
+
+CalculateDiscountUseCase --> SalesController : CalculateDiscountResult
+deactivate CalculateDiscountUseCase
+
+SalesController --> FrontEnd : 200 OK\n(CalculateDiscountResult)
+deactivate SalesController
+
+@enduml

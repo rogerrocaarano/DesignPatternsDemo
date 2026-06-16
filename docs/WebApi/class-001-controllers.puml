@@ -1,0 +1,57 @@
+@startuml
+skinparam wrapWidth 500
+skinparam monochrome true
+
+!include classes/SalesController.puml
+!include classes/CreateSaleRequest.puml
+!include classes/SaleCreationAction.puml
+!include classes/CalculateDiscountAction.puml
+!include classes/SaleCreationUseCase.puml
+!include classes/CalculateDiscountUseCase.puml
+!include classes/SaleCreationResult.puml
+!include classes/CalculateDiscountResult.puml
+
+!include classes/CustomersController.puml
+!include classes/GetCustomerAction.puml
+!include classes/SearchCustomerByNitAction.puml
+!include classes/ListCustomersUseCase.puml
+!include classes/GetCustomerUseCase.puml
+!include classes/SearchCustomerByNitUseCase.puml
+!include classes/CustomerResult.puml
+
+!include classes/ProductsController.puml
+!include classes/GetProductAction.puml
+!include classes/ListProductsUseCase.puml
+!include classes/GetProductUseCase.puml
+!include classes/ProductResult.puml
+
+SalesController .up.> CreateSaleRequest
+SalesController .down.> SaleCreationUseCase
+SalesController .down.> CalculateDiscountUseCase
+
+SaleCreationUseCase .down.> SaleCreationAction
+SaleCreationUseCase .down.> SaleCreationResult
+
+CalculateDiscountUseCase .down.> CalculateDiscountAction
+CalculateDiscountUseCase .down.> CalculateDiscountResult
+
+CustomersController .down.> ListCustomersUseCase
+CustomersController .down.> GetCustomerUseCase
+CustomersController .down.> SearchCustomerByNitUseCase
+
+GetCustomerUseCase .down.> GetCustomerAction
+SearchCustomerByNitUseCase .down.> SearchCustomerByNitAction
+
+ListCustomersUseCase .down.> CustomerResult
+GetCustomerUseCase .down.> CustomerResult
+SearchCustomerByNitUseCase .down.> CustomerResult
+
+ProductsController .down.> ListProductsUseCase
+ProductsController .down.> GetProductUseCase
+
+GetProductUseCase .down.> GetProductAction
+
+ListProductsUseCase .down.> ProductResult
+GetProductUseCase .down.> ProductResult
+
+@enduml

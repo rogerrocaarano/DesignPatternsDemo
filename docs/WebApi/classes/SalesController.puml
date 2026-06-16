@@ -1,0 +1,11 @@
+@startuml SalesController
+
+class SalesController {
+    -_creationUseCase : SaleCreationUseCase
+    -_calculateDiscountUseCase : CalculateDiscountUseCase
+    +CalculateSaleDiscount(request: CreateSaleRequest) : Task<IActionResult>
+    +RegisterSale(request: CreateSaleRequest) : Task<IActionResult>
+    -{static} MapItems(request: CreateSaleRequest) : List<SaleItemValue>
+}
+
+@enduml

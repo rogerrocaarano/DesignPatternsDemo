@@ -1,0 +1,8 @@
+@startuml GetCustomerUseCase
+
+class GetCustomerUseCase {
+    -_repository : ICustomersRepository
+    +RealizeAsync(action: GetCustomerAction) : Task<CustomerResult?>
+}
+
+@enduml

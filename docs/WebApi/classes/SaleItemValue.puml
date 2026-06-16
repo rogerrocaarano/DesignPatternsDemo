@@ -1,0 +1,8 @@
+@startuml SaleItemValue
+
+class SaleItemValue <<record>> {
+    +ProductId : Guid
+    +Quantity : int
+}
+
+@enduml

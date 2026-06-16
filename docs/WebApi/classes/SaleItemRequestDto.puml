@@ -1,0 +1,8 @@
+@startuml SaleItemRequestDto
+
+class SaleItemRequestDto <<record>> {
+    +ProductId : Guid
+    +Quantity : int
+}
+
+@enduml

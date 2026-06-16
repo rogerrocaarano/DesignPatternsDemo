@@ -3,7 +3,7 @@
 class SearchOrCreateCustomerHandler {
     -_customersRepository : ICustomersRepository
     +SearchOrCreateCustomerHandler(customersRepository: ICustomersRepository)
-    +HandleAsync(context: SaleContext) : Task
+    +HandleAsync(handlerContext: SaleHandlerContext) : Task
 }
 
 @enduml

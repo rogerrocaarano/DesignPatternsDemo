@@ -1,0 +1,20 @@
+@startuml
+skinparam wrapWidth 350
+skinparam monochrome true
+
+!include classes/ApplyDiscountHandler.puml
+!include classes/DiscountStrategyContext.puml
+!include classes/IDiscountStrategy.puml
+!include classes/NewCustomerDiscountStrategy.puml
+!include classes/VipClientDiscountStrategy.puml
+!include classes/SaleAmountDiscountStrategy.puml
+!include classes/Discount.puml
+
+ApplyDiscountHandler ..> DiscountStrategyContext
+DiscountStrategyContext o-down- IDiscountStrategy
+IDiscountStrategy <|.down. NewCustomerDiscountStrategy
+IDiscountStrategy <|.down. VipClientDiscountStrategy
+IDiscountStrategy <|.down. SaleAmountDiscountStrategy
+IDiscountStrategy .left.> Discount
+
+@enduml

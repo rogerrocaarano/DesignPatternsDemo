@@ -1,0 +1,8 @@
+@startuml ListProductsUseCase
+
+class ListProductsUseCase {
+    -_repository : IProductsRepository
+    +RealizeAsync() : Task<IReadOnlyList<ProductResult>>
+}
+
+@enduml

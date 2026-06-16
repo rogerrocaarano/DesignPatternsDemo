@@ -1,0 +1,8 @@
+@startuml GetProductUseCase
+
+class GetProductUseCase {
+    -_repository : IProductsRepository
+    +RealizeAsync(action: GetProductAction) : Task<ProductResult?>
+}
+
+@enduml

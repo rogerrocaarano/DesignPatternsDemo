@@ -1,0 +1,9 @@
+@startuml CreateSaleRequest
+
+class CreateSaleRequest <<record>> {
+    +CustomerFullName : string
+    +CustomerNit : string
+    +Items : List<SaleItemRequestDto>
+}
+
+@enduml

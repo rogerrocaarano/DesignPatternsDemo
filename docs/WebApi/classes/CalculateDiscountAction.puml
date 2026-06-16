@@ -1,0 +1,9 @@
+@startuml CalculateDiscountAction
+
+class CalculateDiscountAction <<record>> {
+    +CustomerFullName : string
+    +CustomerNit : string
+    +Items : List<SaleItemValue>
+}
+
+@enduml

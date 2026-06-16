@@ -3,7 +3,7 @@
 class EfSalesRepository {
     -dbContext : AppDbContext
     +EfSalesRepository(dbContext: AppDbContext)
-    +SaveSale(newSale: Sale) : Task<Sale>
+    +SaveSaleAsync(newSale: Sale) : Task<Sale>
 }
 
 @enduml

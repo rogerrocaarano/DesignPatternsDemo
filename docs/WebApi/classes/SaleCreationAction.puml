@@ -1,0 +1,9 @@
+@startuml SaleCreationAction
+
+class SaleCreationAction <<record>> {
+    +CustomerFullName : string
+    +CustomerNit : string
+    +Items : List<SaleItemValue>
+}
+
+@enduml

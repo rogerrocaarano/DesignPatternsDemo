@@ -1,8 +1,0 @@
-@startuml SaleItemRequest
-
-class SaleItemRequest <<record>> {
-    +ProductId : Guid
-    +Quantity : int
-}
-
-@enduml
